@@ -1,0 +1,53 @@
+{
+  "name": "@truework/sdk",
+  "version": "0.0.0",
+  "description": "Official Truework Node.js SDK",
+  "source": "./lib/index.ts",
+  "main": "dist/index.js",
+  "scripts": {
+    "watch": "microbundle watch",
+    "build": "microbundle build",
+    "test": "ava ./lib/test.ts --verbose",
+    "lint": "prettier-standard ./lib/*.ts --format",
+    "publish": "np"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "prettier-standard --format --staged"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/truework/truework-sdk-js.git"
+  },
+  "keywords": [],
+  "author": "Truework",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/truework/truework-sdk-js/issues"
+  },
+  "homepage": "https://github.com/truework/truework-sdk-js#readme",
+  "ava": {
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "devDependencies": {
+    "@types/nanoassert": "^2.0.0",
+    "@types/node": "^14.0.23",
+    "ava": "^3.10.1",
+    "dotenv": "^8.2.0",
+    "husky": "^4.2.5",
+    "microbundle": "^0.12.3",
+    "np": "^6.3.2",
+    "prettier-standard": "^16.4.1",
+    "ts-node": "^8.10.2"
+  },
+  "dependencies": {
+    "got": "^11.5.1",
+    "nanoassert": "^2.0.0"
+  }
+}
