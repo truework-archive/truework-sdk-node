@@ -1,148 +1,157 @@
 /* ----- RESPONSES ----- */
 
 export interface ListCompaniesResponse {
-  results: CompanySearchResult[]
-  next?: string
-  previous?: string
-  count: number
+  results: CompanySearchResult[];
+  next?: string;
+  previous?: string;
+  count: number;
 }
 
 export interface ListVerificationsResponse {
-  results: VerificationRequestData[]
-  next?: string
-  previous?: string
-  count: number
+  results: VerificationRequestData[];
+  next?: string;
+  previous?: string;
+  count: number;
 }
 
 export interface RetrieveReportResponse {
-  created?: string
-  current_as_of?: string
-  verification_request: VerificationRequestSnippet
-  employer: Employer
-  employee: Employee
+  created?: string;
+  current_as_of?: string;
+  verification_request: VerificationRequestSnippet;
+  employer: Employer;
+  employee: Employee;
 }
 
 export interface RetrieveVerificationResponse {
-  id: string
-  created: string
-  type: string
-  permissible_purpose: string
-  state: string
-  target: Target
-  price: Price
-  turnaround_time: TurnaroundTime
-  documents: Document[]
-  additional_information: string
+  id: string;
+  created: string;
+  type: string;
+  permissible_purpose: string;
+  state: string;
+  target: Target;
+  price: Price;
+  turnaround_time: TurnaroundTime;
+  documents: Document[];
+  additional_information: string;
 }
 
 /* ----- Other types - alphabetical ----- */
 
 export interface Address {
-  line_one: string
-  line_two: string
-  city: string
-  state: string
-  country: string
-  postal_code: string
+  line_one: string;
+  line_two: string;
+  city: string;
+  state: string;
+  country: string;
+  postal_code: string;
 }
 
 export interface Company {
-  id: string // one of id or name is required
-  name: string
+  id: string;
+  name: string;
 }
 
 export interface CompanySearchResult {
-  id: string
-  name: string
-  domain?: string
+  id: string;
+  name: string;
+  domain?: string;
 }
 
 export interface Document {
-  filename: string
-  content: string
+  filename: string;
+  content: string;
 }
 
 export interface Earnings {
-  year: string
-  base: string
-  overtime: string
-  commission: string
-  bonus: string
-  total: string
+  year: string;
+  base: string;
+  overtime: string;
+  commission: string;
+  bonus: string;
+  total: string;
 }
 
 export interface Employee {
-  first_name: string
-  last_name: string
-  address: Address
-  status: string // active, inactive, unknown
-  start_date: string
-  termination_date: string
-  social_security_number: string
-  earnings: Earnings[]
-  positions: Position[]
-  salary: Salary
+  first_name: string;
+  last_name: string;
+  address: Address;
+  status: 'active' | 'inactive' | 'unknown';
+  start_date: string;
+  termination_date: string;
+  social_security_number: string;
+  earnings: Earnings[];
+  positions: Position[];
+  salary: Salary;
 }
 
 export interface Employer {
-  name: string
-  address: Address
+  name: string;
+  address: Address;
 }
 
 export interface Position {
-  title: string
-  start_date: string
-  employment_type: string // regular-full-time, regular-part-time, contractor, other
+  title: string;
+  start_date: string;
+  employment_type:
+    | 'regular-full-time'
+    | 'regular-part-time'
+    | 'contractor'
+    | 'other';
 }
 
 export interface Price {
-  amount: string
-  currency: string
+  amount: string;
+  currency: string;
 }
 
 export interface Salary {
-  gross_pay: string
-  pay_frequency: string
-  hours_per_week: string
+  gross_pay: string;
+  pay_frequency: string;
+  hours_per_week: string;
 }
 
 export interface Target {
-  first_name: string
-  last_name: string
-  social_security_number: string
-  contact_email?: string
-  company: Pick<Company, 'id'> | Pick<Company, 'name'> | Company
+  first_name: string;
+  last_name: string;
+  social_security_number: string;
+  contact_email?: string;
+  company: Pick<Company, 'id'> | Pick<Company, 'name'> | Company; // one of id or name is required
 }
 
 export interface TurnaroundTime {
-  upper_bound?: string
-  lower_bound?: string
+  upper_bound?: string;
+  lower_bound?: string;
 }
 
 export interface VerificationRequest {
-  type: string
-  permissible_purpose: string
-  target: Target
-  documents?: Document[]
-  additional_information?: string
+  type: string;
+  permissible_purpose: string;
+  target: Target;
+  documents?: Document[];
+  additional_information?: string;
 }
 
 export interface VerificationRequestData {
-  id: string
-  created: string
-  type: string
-  permissible_purpose: string
-  state: string
-  cancellation_reason?: string
-  cancellation_details?: string
-  target: Target
-  price: Price
-  turnaround_time: TurnaroundTime
-  documents?: Document[]
+  id: string;
+  created: string;
+  type: string;
+  permissible_purpose: string;
+  state: string;
+  cancellation_reason?:
+    | 'immediate'
+    | 'high-turnaround-time'
+    | 'competitor'
+    | 'wrong-info'
+    | 'other';
+  cancellation_details?: string;
+  target: Target;
+  price: Price;
+  turnaround_time: TurnaroundTime;
+  documents?: Document[];
 }
 
 export interface VerificationRequestSnippet {
-  type: string
-  created: string
-  id: string
+  type: string;
+  created: string;
+  id: string;
 }
