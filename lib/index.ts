@@ -1,9 +1,16 @@
-import got from 'got'
+import got, { GotReturn } from 'got'
 import assert from 'nanoassert'
 import * as qs from 'query-string'
 
 import pkg from '../package.json'
-import { VerificationRequest } from './types'
+import {
+  VerificationRequest,
+  ListVerificationsResponse,
+  RetrieveVerificationResponse,
+  RetrieveReportResponse,
+  VerificationRequestData,
+  ListCompaniesResponse
+} from './types'
 import { handleResponse } from './response'
 
 const {
@@ -34,26 +41,31 @@ export function truework (config: { token: string }) {
   })
 
   return {
-    // TODO type responses
     verifications: {
       get () {
-        return handleResponse(() => client.get('verification-requests'))
+        return handleResponse<GotReturn>(() =>
+          client.get<ListVerificationsResponse>('verification-requests')
+        )
       },
       getOne ({ requestId }: { requestId: string }) {
         assert(requestId, 'requestId is required')
-        return handleResponse(() =>
-          client.get(`verification-requests/${requestId}`)
+        return handleResponse<GotReturn>(() =>
+          client.get<RetrieveVerificationResponse>(
+            `verification-requests/${requestId}`
+          )
         )
       },
       getReport ({ requestId }: { requestId: string }) {
         assert(requestId, 'requestId is required')
-        return handleResponse(() =>
-          client.get(`verification-requests/${requestId}/report`)
+        return handleResponse<GotReturn>(() =>
+          client.get<RetrieveReportResponse>(
+            `verification-requests/${requestId}/report`
+          )
         )
       },
       create (requestObj: VerificationRequest) {
-        return handleResponse(() =>
-          client.post({
+        return handleResponse<GotReturn>(() =>
+          client.post<VerificationRequestData>({
             url: 'verification-requests',
             method: 'POST',
             json: requestObj
@@ -74,7 +86,7 @@ export function truework (config: { token: string }) {
           cancellationReason in CANCELLATION_REASONS,
           'must enter a valid cancellation reason'
         )
-        return handleResponse(() =>
+        return handleResponse<GotReturn>(() =>
           client.patch({
             url: `verification-requests/${requestId}/cancel`,
             method: 'PATCH',
@@ -101,7 +113,9 @@ export function truework (config: { token: string }) {
           offset,
           limit
         })
-        return handleResponse(() => client.get(`companies/?${params}`))
+        return handleResponse<GotReturn>(() =>
+          client.get<ListCompaniesResponse>(`companies/?${params}`)
+        )
       }
     }
   }
