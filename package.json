@@ -7,7 +7,7 @@
   "scripts": {
     "watch": "microbundle watch",
     "build": "microbundle build",
-    "test": "ava ./lib/test.ts --verbose",
+    "test": "ava ./lib/__test__/*.ts --verbose",
     "lint": "prettier-standard ./lib/*.ts --format",
     "publish": "np"
   },
