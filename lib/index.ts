@@ -40,18 +40,24 @@ export function truework (config: { token: string }) {
       },
       getOne ({ requestId }: { requestId: string }) {
         assert(requestId, 'requestId is required')
-        return client.get(`verification-requests/${requestId}`)
+        return handleResponse(() =>
+          client.get(`verification-requests/${requestId}`)
+        )
       },
       getReport ({ requestId }: { requestId: string }) {
         assert(requestId, 'requestId is required')
-        return client.get(`verification-requests/${requestId}/report`)
+        return handleResponse(() =>
+          client.get(`verification-requests/${requestId}/report`)
+        )
       },
       create (requestObj: VerificationRequest) {
-        return client.post({
-          url: 'verification-requests',
-          method: 'POST',
-          json: requestObj
-        })
+        return handleResponse(() =>
+          client.post({
+            url: 'verification-requests',
+            method: 'POST',
+            json: requestObj
+          })
+        )
       },
       cancel ({
         requestId,
@@ -67,14 +73,16 @@ export function truework (config: { token: string }) {
           cancellationReason in CANCELLATION_REASONS,
           'must enter a valid cancellation reason'
         )
-        return client.patch({
-          url: `verification-requests/${requestId}/cancel`,
-          method: 'PATCH',
-          json: {
-            cancellation_reason: cancellationReason,
-            cancellation_details: cancellationDetails
-          }
-        })
+        return handleResponse(() =>
+          client.patch({
+            url: `verification-requests/${requestId}/cancel`,
+            method: 'PATCH',
+            json: {
+              cancellation_reason: cancellationReason,
+              cancellation_details: cancellationDetails
+            }
+          })
+        )
       }
     }
   }
