@@ -1,5 +1,6 @@
 import got from 'got'
 import assert from 'nanoassert'
+import * as qs from 'query-string'
 
 import pkg from '../package.json'
 import { VerificationRequest } from './types'
@@ -83,6 +84,24 @@ export function truework (config: { token: string }) {
             }
           })
         )
+      }
+    },
+    companies: {
+      get ({
+        q,
+        offset = 0,
+        limit = 25
+      }: {
+        q: string
+        offset?: number
+        limit?: number
+      }) {
+        const params = qs.stringify({
+          q,
+          offset,
+          limit
+        })
+        return handleResponse(() => client.get(`companies/?${params}`))
       }
     }
   }

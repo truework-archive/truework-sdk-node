@@ -1,5 +1,12 @@
 /* ----- RESPONSES ----- */
 
+export interface ListCompaniesResponse {
+  results: CompanySearchResult[]
+  next?: string
+  previous?: string
+  count: number
+}
+
 export interface ListVerificationsResponse {
   results: VerificationRequestData[]
   next?: string
@@ -42,6 +49,12 @@ export interface Address {
 export interface Company {
   id: string // one of id or name is required
   name: string
+}
+
+export interface CompanySearchResult {
+  id: string
+  name: string
+  domain?: string
 }
 
 export interface Document {
