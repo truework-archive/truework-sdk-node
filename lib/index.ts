@@ -1,7 +1,9 @@
 import got from 'got'
 import assert from 'nanoassert'
+
 import pkg from '../package.json'
-import { VerificationRequest } from './types.js'
+import { VerificationRequest } from './types'
+import { handleResponse } from './response'
 
 const {
   TRUEWORK_API_BASE_URL = 'https://api.truework.com',
@@ -31,9 +33,10 @@ export function truework (config: { token: string }) {
   })
 
   return {
+    // TODO type responses
     verifications: {
       get () {
-        return client.get('verification-requests')
+        return handleResponse(() => client.get('verification-requests'))
       },
       getOne ({ requestId }: { requestId: string }) {
         assert(requestId, 'requestId is required')
