@@ -13,11 +13,6 @@ import {
 } from './types';
 import { handleResponse } from './response';
 
-const {
-  TRUEWORK_API_BASE_URL = 'https://api.truework.com',
-  TRUEWORK_API_VERSION = '2019-10-15',
-} = process.env;
-
 const CANCELLATION_REASONS = [
   'immediate',
   'high-turnaround-time',
@@ -26,17 +21,28 @@ const CANCELLATION_REASONS = [
   'other',
 ];
 
-export function truework (config: { token: string }) {
+export function truework (config: {
+  token: string;
+  baseURL?: string;
+  version?: string;
+}) {
   assert(typeof config === 'object', 'config object is required');
-  assert(config.token, 'config.token is required');
+
+  const {
+    token,
+    baseURL = 'https://api.truework.com/',
+    version = '2019-10-15',
+  } = config;
+
+  assert(token, 'config.token is required');
 
   const client = got.extend({
-    prefixUrl: TRUEWORK_API_BASE_URL,
+    prefixUrl: baseURL,
     headers: {
       'content-type': 'application/json',
-      accept: `application/json; version=${TRUEWORK_API_VERSION}`,
+      accept: `application/json; version=${version}`,
       'user-agent': `Truework Node SDK v${pkg.version}; Node ${process.version}`,
-      authorization: `Bearer ${config.token}`,
+      authorization: `Bearer ${token}`,
     },
   });
 
@@ -111,8 +117,10 @@ export function truework (config: { token: string }) {
           offset,
           limit,
         });
-        return handleResponse<GotReturn>(() =>
-          client.get<ListCompaniesResponse>(`companies/?${params}`)
+        return handleResponse(() =>
+          client.get<ListCompaniesResponse>(`companies/?${params}`, {
+            responseType: 'json',
+          })
         );
       },
     },
