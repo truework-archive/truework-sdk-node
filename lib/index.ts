@@ -64,6 +64,7 @@ export function truework (config: { token: string }) {
         );
       },
       create (requestObj: VerificationRequest) {
+        assert(typeof requestObj === 'object', 'verification data is required');
         return handleResponse<GotReturn>(() =>
           client.post<VerificationRequestData>({
             url: 'verification-requests',
@@ -99,15 +100,12 @@ export function truework (config: { token: string }) {
       },
     },
     companies: {
-      get ({
-        q,
-        offset = 0,
-        limit = 25,
-      }: {
-        q: string;
-        offset?: number;
-        limit?: number;
-      }) {
+      get (searchObj: { q: string; offset?: number; limit?: number }) {
+        assert(typeof searchObj === 'object', 'search params required');
+
+        const { q, offset = 0, limit = 25 } = searchObj;
+        assert(typeof q === 'string', 'must enter a query');
+
         const params = qs.stringify({
           q,
           offset,
