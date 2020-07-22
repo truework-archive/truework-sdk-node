@@ -50,22 +50,22 @@ export function truework (config: {
     verifications: {
       get () {
         return handleResponse<GotReturn>(() =>
-          client.get<ListVerificationsResponse>('verification-requests')
+          client.get<ListVerificationsResponse>('verification-requests/')
         );
       },
-      getOne ({ requestId }: { requestId: string }) {
-        assert(requestId, 'requestId is required');
+      getOne ({ id }: { id: string }) {
+        assert(id, 'request Id is required');
         return handleResponse<GotReturn>(() =>
           client.get<RetrieveVerificationResponse>(
-            `verification-requests/${requestId}`
+            `verification-requests/${id}`
           )
         );
       },
-      getReport ({ requestId }: { requestId: string }) {
-        assert(requestId, 'requestId is required');
+      getReport ({ id }: { id: string }) {
+        assert(id, 'request Id is required');
         return handleResponse<GotReturn>(() =>
           client.get<RetrieveReportResponse>(
-            `verification-requests/${requestId}/report`
+            `verification-requests/${id}/report`
           )
         );
       },
@@ -73,29 +73,29 @@ export function truework (config: {
         assert(typeof requestObj === 'object', 'verification data is required');
         return handleResponse<GotReturn>(() =>
           client.post<VerificationRequestData>({
-            url: 'verification-requests',
+            url: 'verification-requests/',
             method: 'POST',
             json: requestObj,
           })
         );
       },
       cancel ({
-        requestId,
+        id,
         cancellationReason,
         cancellationDetails,
       }: {
-        requestId: string;
+        id: string;
         cancellationReason: string;
         cancellationDetails: string;
       }) {
-        assert(requestId, 'requestId is required');
+        assert(id, 'request Id is required');
         assert(
-          cancellationReason in CANCELLATION_REASONS,
+          CANCELLATION_REASONS.includes(cancellationReason),
           'must enter a valid cancellation reason'
         );
         return handleResponse<GotReturn>(() =>
           client.patch({
-            url: `verification-requests/${requestId}/cancel`,
+            url: `verification-requests/${id}/cancel/`,
             method: 'PATCH',
             json: {
               cancellation_reason: cancellationReason,
