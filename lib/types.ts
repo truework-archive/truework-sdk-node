@@ -1,41 +1,91 @@
+/* ----- CONSTS ----- */
+
+export enum CANCELLATION_REASONS {
+  IMMEDIATE = 'immediate',
+  HIGH_TURNAROUND_TIME = 'high-turnaround-time',
+  COMPETITOR = 'competitor',
+  WRONG_INFO = 'wrong-info',
+  OTHER = 'other',
+}
+
+export enum VERIFICATION_STATES {
+  PENDING_APPROVAL = 'pending-approval',
+  ACTION_REQUIRED = 'action-required',
+  INVALID = 'invalid',
+  PROCESSING = 'processing',
+  COMPLETED = 'completed',
+  CANCELED = 'canceled',
+}
+
+export enum PERMISSIBLE_PURPOSES {
+  CHILD_SUPPORT = 'child-support',
+  CREDIT_APPLICATION = 'credit-application',
+  EMPLOYEE_ELIGIBILITY = 'employee-eligibility',
+  EMPLOYEE_REQUEST = 'employee-request',
+  EMPLOYEE_REVIEW_OR_COLLECTION = 'employee-review-or-collection',
+  EMPLOYMENT = 'employment',
+  INSURANCE_UNDERWRITING_APPLICATION = 'insurance-underwriting-application',
+  LEGITIMATE_REASON_INITIATED = 'legitimate-reason-initiated',
+  LEGITIMATE_REASON_REVIEW = 'legitimate-reason-review',
+  RISK_ASSESSMENT = 'risk-assessment',
+  SUBPOENA = 'subpoena',
+}
+
+/* ----- GENERICS ----- */
+
+export type PaginatedResponse<T> = {
+  results: T[];
+  next?: string;
+  previous?: string;
+  count: number;
+};
+
+/* ----- REQUESTS ----- */
+
+export type RequestVerificationsGet = {
+  state?: VERIFICATION_STATES;
+  offset?: number;
+  limit?: number;
+};
+export type RequestVerificationsGetOne = {
+  id: string;
+};
+export type RequestVerificationsCancel = {
+  id: string;
+  cancellationReason: CANCELLATION_REASONS;
+  cancellationDetails?: string;
+};
+export type RequestVerificationsCreate = {
+  type: string;
+  permissible_purpose: PERMISSIBLE_PURPOSES;
+  target: Target;
+  documents?: Document[];
+  additional_information?: string;
+};
+export type RequestVerificationsGetReport = {
+  id: string;
+};
+export type RequestCompaniesGet = {
+  query: string;
+  offset?: number;
+  limit?: number;
+};
+
 /* ----- RESPONSES ----- */
 
-export interface ListCompaniesResponse {
-  results: CompanySearchResult[];
-  next?: string;
-  previous?: string;
-  count: number;
-}
-
-export interface ListVerificationsResponse {
-  results: VerificationRequestData[];
-  next?: string;
-  previous?: string;
-  count: number;
-}
-
-export interface RetrieveReportResponse {
+export type ResponseVerificationsCreate = Verification;
+export type ResponseVerificationsGet = PaginatedResponse<Verification>;
+export type ResponseVerificationsGetOne = Verification;
+export type ResponseReportGet = {
   created?: string;
   current_as_of?: string;
-  verification_request: VerificationRequestSnippet;
+  verification_request: ReportVerificationRequest;
   employer: Employer;
   employee: Employee;
-}
+};
+export type ResponseCompaniesGet = PaginatedResponse<CompanySearchResult>;
 
-export interface RetrieveVerificationResponse {
-  id: string;
-  created: string;
-  type: string;
-  permissible_purpose: string;
-  state: string;
-  target: Target;
-  price: Price;
-  turnaround_time: TurnaroundTime;
-  documents: Document[];
-  additional_information: string;
-}
-
-/* ----- Other types - alphabetical ----- */
+/* ----- OTHER TYPES - ALPHABETICAL ----- */
 
 export interface Address {
   line_one: string;
@@ -104,6 +154,12 @@ export interface Price {
   currency: string;
 }
 
+export type ReportVerificationRequest = {
+  type: string;
+  created: string;
+  id: string;
+};
+
 export interface Salary {
   gross_pay: string;
   pay_frequency: string;
@@ -123,35 +179,17 @@ export interface TurnaroundTime {
   lower_bound?: string;
 }
 
-export interface VerificationRequest {
-  type: string;
-  permissible_purpose: string;
-  target: Target;
-  documents?: Document[];
-  additional_information?: string;
-}
-
-export interface VerificationRequestData {
+export interface Verification {
   id: string;
-  created: string;
-  type: string;
-  permissible_purpose: string;
   state: string;
-  cancellation_reason?:
-    | 'immediate'
-    | 'high-turnaround-time'
-    | 'competitor'
-    | 'wrong-info'
-    | 'other';
-  cancellation_details?: string;
-  target: Target;
   price: Price;
   turnaround_time: TurnaroundTime;
-  documents?: Document[];
-}
-
-export interface VerificationRequestSnippet {
-  type: string;
   created: string;
-  id: string;
+  target: Target;
+  permissible_purpose: PERMISSIBLE_PURPOSES;
+  type: string;
+  documents?: Document[];
+  additional_information?: string;
+  cancellation_reason?: CANCELLATION_REASONS;
+  cancellation_details?: string;
 }
