@@ -10,7 +10,8 @@
     "test": "ava ./lib/__test__/*.test.ts --verbose",
     "lint": "prettier-standard ./lib/*.ts --format",
     "publish": "np",
-    "postbuild": "npm run test && npm run lint"
+    "postbuild": "npm run test",
+    "prepublish": "npm run build"
   },
   "husky": {
     "hooks": {
