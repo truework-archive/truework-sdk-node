@@ -9,7 +9,7 @@
     "build": "microbundle build",
     "test": "ava ./lib/__test__/*.test.ts --verbose",
     "lint": "prettier-standard ./lib/*.ts --format",
-    "publish": "np",
+    "release": "np",
     "postbuild": "npm run test",
     "prepublish": "npm run build"
   },
