@@ -1,5 +1,10 @@
 /* ----- CONSTS ----- */
 
+export enum VERIFICATION_TYPES {
+  VOI = 'employment-income',
+  VOE = 'employment',
+}
+
 export enum CANCELLATION_REASONS {
   IMMEDIATE = 'immediate',
   HIGH_TURNAROUND_TIME = 'high-turnaround-time',
@@ -56,7 +61,7 @@ export type RequestVerificationsCancel = {
   cancellationDetails?: string;
 };
 export type RequestVerificationsCreate = {
-  type: string;
+  type: VERIFICATION_TYPES;
   permissible_purpose: PERMISSIBLE_PURPOSES;
   target: Target;
   documents?: Document[];
@@ -77,7 +82,7 @@ export type ResponseVerificationsCreate = Verification;
 export type ResponseVerificationsGet = PaginatedResponse<Verification>;
 export type ResponseVerificationsGetOne = Verification;
 export type ResponseReportGet = {
-  created?: string;
+  created: string;
   current_as_of?: string;
   verification_request: ReportVerificationRequest;
   employer: Employer;
@@ -155,7 +160,7 @@ export interface Price {
 }
 
 export type ReportVerificationRequest = {
-  type: string;
+  type: VERIFICATION_TYPES;
   created: string;
   id: string;
 };
@@ -187,7 +192,7 @@ export interface Verification {
   created: string;
   target: Target;
   permissible_purpose: PERMISSIBLE_PURPOSES;
-  type: string;
+  type: VERIFICATION_TYPES;
   documents?: Document[];
   additional_information?: string;
   cancellation_reason?: CANCELLATION_REASONS;

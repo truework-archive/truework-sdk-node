@@ -7,7 +7,7 @@
   "scripts": {
     "watch": "microbundle watch",
     "build": "microbundle build",
-    "test": "ava ./lib/__test__/*.ts --verbose",
+    "test": "ava ./lib/__test__/*.test.ts --verbose",
     "lint": "prettier-standard ./lib/*.ts --format",
     "publish": "np"
   },
@@ -43,6 +43,7 @@
     "dotenv": "^8.2.0",
     "husky": "^4.2.5",
     "microbundle": "^0.12.3",
+    "nock": "^13.0.3",
     "np": "^6.3.2",
     "prettier-standard": "^16.4.1",
     "sinon": "^9.0.2",

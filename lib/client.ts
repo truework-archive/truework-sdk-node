@@ -66,6 +66,11 @@ export function client (config: {
         );
       },
       get (params: RequestVerificationsGet = {} as any) {
+        assert(
+          params === undefined || typeof params === 'object',
+          invalidParams('verifications.getOne')
+        );
+
         const { state, limit, offset } = params;
 
         const url = withQueryParams(
@@ -111,10 +116,6 @@ export function client (config: {
         const { id, cancellationReason, cancellationDetails } = params;
 
         assert(id, invalidField('verifications.cancel', 'id'));
-        assert(
-          cancellationDetails,
-          invalidField('verifications.cancel', 'cancellationDetails')
-        );
         assert(
           cancellationReason &&
             Object.values(CANCELLATION_REASONS).includes(cancellationReason),
