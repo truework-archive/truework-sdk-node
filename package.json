@@ -11,7 +11,7 @@
     "lint": "prettier-standard ./lib/*.ts --format",
     "release": "np",
     "postbuild": "npm run test",
-    "prepublish": "npm run build"
+    "prerelease": "npm run build"
   },
   "husky": {
     "hooks": {
