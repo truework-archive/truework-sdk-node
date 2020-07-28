@@ -59,7 +59,6 @@ export function client (config: {
         return handleResponse(() =>
           client.post<ResponseVerificationsCreate>({
             url: 'verification-requests/',
-            method: 'POST',
             json: params,
             responseType: 'json',
           })
@@ -123,9 +122,8 @@ export function client (config: {
         );
 
         return handleResponse(() =>
-          client.patch({
+          client.put({
             url: `verification-requests/${id}/cancel/`,
-            method: 'PATCH',
             json: {
               cancellation_reason: cancellationReason,
               cancellation_details: cancellationDetails,

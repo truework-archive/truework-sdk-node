@@ -148,7 +148,7 @@ test('verifications.cancel - request is made', async t => {
   const { client } = t.context;
 
   nock(baseURL)
-    .patch('/verification-requests/12345/cancel/')
+    .put('/verification-requests/12345/cancel/')
     .reply(200);
 
   const res = await client.verifications.cancel({
