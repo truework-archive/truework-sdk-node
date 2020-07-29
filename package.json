@@ -15,7 +15,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "prettier-standard --format --staged"
+      "pre-commit": "prettier-standard --format --staged",
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
     }
   },
   "repository": {
@@ -42,6 +43,8 @@
     "@types/node": "^14.0.23",
     "@types/sinon": "^9.0.4",
     "ava": "^3.10.1",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
     "dotenv": "^8.2.0",
     "husky": "^4.2.5",
     "microbundle": "^0.12.3",
@@ -55,5 +58,10 @@
     "got": "^11.5.1",
     "nanoassert": "^2.0.0",
     "query-string": "^6.13.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
