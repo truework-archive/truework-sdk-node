@@ -9,6 +9,7 @@ The official Truework API Node.js SDK.
 - [Usage](#getting-started)
   - [Verifications](#verifications)
   - [Companies](#companies)
+- [Contributing](#contributing)
 
 ## Resources
 
@@ -177,6 +178,14 @@ Returns a `PaginatedResponse` containing an array of `Company`s.
 ```ts
 await client.companies.get({ query: 'USWNT' });
 ```
+
+## Contributing
+
+### Commiting
+
+This repo uses [commitizen](https://github.com/commitizen/cz-cli) to nicely
+format commit messages. Upon making edits, stage your changes and simply run
+`git commit` to enter the commitizen UI in your terminal.
 
 ## License
 
