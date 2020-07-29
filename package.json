@@ -8,7 +8,8 @@
     "watch": "microbundle watch",
     "build": "microbundle build",
     "test": "ava ./lib/__test__/*.test.ts --verbose",
-    "lint": "prettier-standard ./lib/*.ts --format",
+    "format": "prettier-standard ./lib/*.ts --format",
+    "lint": "prettier-standard ./lib/*.ts",
     "release": "np",
     "postbuild": "npm run test",
     "prerelease": "npm run build"
