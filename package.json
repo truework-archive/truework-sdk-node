@@ -47,7 +47,6 @@
     "husky": "^4.2.5",
     "microbundle": "^0.12.3",
     "nock": "^13.0.3",
-    "np": "^6.3.2",
     "prettier-standard": "^16.4.1",
     "semantic-release": "^17.1.1",
     "sinon": "^9.0.2",
