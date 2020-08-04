@@ -9,10 +9,7 @@
     "build": "microbundle build",
     "test": "ava ./lib/__test__/*.test.ts --verbose",
     "format": "prettier-standard ./lib/*.ts --format",
-    "lint": "prettier-standard ./lib/*.ts",
-    "release": "np",
-    "postbuild": "npm run test",
-    "prerelease": "npm run build"
+    "lint": "prettier-standard ./lib/*.ts"
   },
   "husky": {
     "hooks": {
@@ -22,15 +19,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/truework/truework-sdk-js.git"
+    "url": "https://github.com/truework/truework-sdk-node.git"
   },
   "keywords": [],
   "author": "Truework",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/truework/truework-sdk-js/issues"
+    "url": "https://github.com/truework/truework-sdk-node/issues"
   },
-  "homepage": "https://github.com/truework/truework-sdk-js#readme",
+  "homepage": "https://github.com/truework/truework-sdk-node#readme",
   "ava": {
     "extensions": [
       "ts"
@@ -50,8 +47,8 @@
     "husky": "^4.2.5",
     "microbundle": "^0.12.3",
     "nock": "^13.0.3",
-    "np": "^6.3.2",
     "prettier-standard": "^16.4.1",
+    "semantic-release": "^17.1.1",
     "sinon": "^9.0.2",
     "ts-node": "^8.10.2"
   },
