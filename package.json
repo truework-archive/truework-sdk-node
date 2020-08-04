@@ -9,8 +9,7 @@
     "build": "microbundle build",
     "test": "ava ./lib/__test__/*.test.ts --verbose",
     "format": "prettier-standard ./lib/*.ts --format",
-    "lint": "prettier-standard ./lib/*.ts",
-    "postbuild": "npm run test"
+    "lint": "prettier-standard ./lib/*.ts"
   },
   "husky": {
     "hooks": {
