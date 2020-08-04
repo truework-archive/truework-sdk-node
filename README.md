@@ -181,11 +181,26 @@ await client.companies.get({ query: 'USWNT' });
 
 ## Contributing
 
+### Issues
+
+If you run into problems, or simply have a question, feel free to [open an
+issue](https://github.com/truework/truework-sdk-node/issues/new)!
+
 ### Commiting
 
 This repo uses [commitizen](https://github.com/commitizen/cz-cli) to nicely
 format commit messages. Upon making edits, stage your changes and simply run
 `git commit` to enter the commitizen UI in your terminal.
+
+### Releases
+
+This project is versioned and published automatically using
+[semantic-release](https://github.com/semantic-release/semantic-release). Via a
+GitHub Action, `semantic-release` will use the commit message pattern provided
+by `commitizen` to automatically version the package. It will then publish to
+npm, as well as create a new
+[release](https://github.com/truework/truework-sdk-node/releases) here in the
+main repo.
 
 ## License
 
