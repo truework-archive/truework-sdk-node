@@ -4,9 +4,15 @@
   "description": "Official Truework Node.js SDK",
   "source": "./lib/index.ts",
   "main": "dist/index.js",
+  "module": "dist/index.m.js",
+  "esmodule": "dist/index.modern.js",
+  "types": "dist/lib/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "watch": "microbundle watch",
-    "build": "microbundle build",
+    "watch": "microbundle watch -f modern,es,cjs",
+    "build": "microbundle build -f modern,es,cjs",
     "test": "ava ./lib/__test__/*.test.ts --verbose",
     "format": "prettier-standard ./lib/*.ts --format",
     "lint": "prettier-standard ./lib/*.ts"
