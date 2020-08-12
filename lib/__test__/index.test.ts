@@ -1,6 +1,5 @@
 import ava, { TestInterface } from 'ava';
 import nock from 'nock';
-// import sinon from 'sinon'
 
 import { truework, TrueworkSDK } from '../';
 import * as types from '../types';
