@@ -3,8 +3,8 @@ import nock from 'nock';
 // import sinon from 'sinon'
 
 import { truework, TrueworkSDK } from '../';
-import { VERIFICATION_STATES, CANCELLATION_REASONS } from '../types';
-import { MockVerificiation } from './mocks';
+import * as types from '../types';
+import * as requests from '../mocks/requests';
 
 const test = ava as TestInterface<{ client: TrueworkSDK }>;
 const baseURL = 'https://test.truework.com/';
@@ -47,7 +47,7 @@ test('verifications.create - request is made', async t => {
 
   const { client } = t.context;
 
-  const res = await client.verifications.create(MockVerificiation);
+  const res = await client.verifications.create(requests.verification);
 
   t.is(res.body.id, '12345');
 });
@@ -84,7 +84,7 @@ test('verifications.get - supports query params', async t => {
     .reply(200, { count: 10 });
 
   const res = await client.verifications.get({
-    state: VERIFICATION_STATES.PENDING_APPROVAL,
+    state: types.VERIFICATION_STATES.PENDING_APPROVAL,
     limit: 10,
     offset: 10,
   });
@@ -153,7 +153,7 @@ test('verifications.cancel - request is made', async t => {
 
   const res = await client.verifications.cancel({
     id: '12345',
-    cancellationReason: CANCELLATION_REASONS.OTHER,
+    cancellationReason: types.CANCELLATION_REASONS.OTHER,
   });
 
   t.is(res.body, '');

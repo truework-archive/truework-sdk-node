@@ -4,15 +4,13 @@
   "description": "Official Truework Node.js SDK",
   "source": "./lib/index.ts",
   "main": "dist/index.js",
-  "module": "dist/index.m.js",
-  "esmodule": "dist/index.modern.js",
   "types": "dist/lib/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "watch": "microbundle watch -f modern,es,cjs",
-    "build": "microbundle build -f modern,es,cjs",
+    "watch": "microbundle watch --target node",
+    "build": "microbundle build --target node",
     "test": "ava ./lib/__test__/*.test.ts --verbose",
     "format": "prettier-standard ./lib/*.ts --format",
     "lint": "prettier-standard ./lib/*.ts"
@@ -44,7 +42,7 @@
   },
   "devDependencies": {
     "@types/nanoassert": "^2.0.0",
-    "@types/node": "^14.0.23",
+    "@types/node": "^14.0.27",
     "@types/sinon": "^9.0.4",
     "ava": "^3.10.1",
     "commitizen": "^4.1.2",
@@ -52,14 +50,14 @@
     "dotenv": "^8.2.0",
     "husky": "^4.2.5",
     "microbundle": "^0.12.0",
-    "nock": "^13.0.3",
+    "nock": "^13.0.4",
     "prettier-standard": "^16.4.1",
     "semantic-release": "^17.1.1",
-    "sinon": "^9.0.2",
+    "sinon": "^9.0.3",
     "ts-node": "^8.10.2"
   },
   "dependencies": {
-    "got": "^11.5.1",
+    "got": "^11.5.2",
     "nanoassert": "^2.0.0",
     "query-string": "^6.13.1"
   },

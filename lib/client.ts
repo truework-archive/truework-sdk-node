@@ -19,12 +19,16 @@ import {
   ResponseReportGet,
   ResponseCompaniesGet,
 } from './types';
+import { register } from './mocks/register';
 
 export function client (config: {
   token: string;
   baseURL?: string;
   version?: string;
+  mock?: boolean;
 }) {
+  if (config.mock) register();
+
   assert(
     typeof config === 'object',
     invalid('client was initiated without a config object')
@@ -67,7 +71,7 @@ export function client (config: {
       get (params: RequestVerificationsGet = {} as any) {
         assert(
           params === undefined || typeof params === 'object',
-          invalidParams('verifications.getOne')
+          invalidParams('verifications.get')
         );
 
         const { state, limit, offset } = params;

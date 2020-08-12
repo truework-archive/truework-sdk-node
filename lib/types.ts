@@ -36,6 +36,12 @@ export enum PERMISSIBLE_PURPOSES {
   SUBPOENA = 'subpoena',
 }
 
+export enum EMPLOYEE_STATUSES {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  UNKNOWN = 'unknown',
+}
+
 /* ----- GENERICS ----- */
 
 export type PaginatedResponse<T> = {
@@ -123,6 +129,7 @@ export interface Earnings {
   overtime: string;
   commission: string;
   bonus: string;
+  other: string;
   total: string;
 }
 
@@ -130,11 +137,11 @@ export interface Employee {
   first_name: string;
   last_name: string;
   address: Address;
-  status: 'active' | 'inactive' | 'unknown';
-  start_date: string;
-  termination_date: string;
+  status: EMPLOYEE_STATUSES;
+  start_date?: string;
+  termination_date?: string;
   social_security_number: string;
-  earnings: Earnings[];
+  earnings?: Earnings[];
   positions: Position[];
   salary: Salary;
 }
@@ -147,7 +154,7 @@ export interface Employer {
 export interface Position {
   title: string;
   start_date: string;
-  employment_type:
+  employment_type?:
     | 'regular-full-time'
     | 'regular-part-time'
     | 'contractor'
