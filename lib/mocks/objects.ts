@@ -89,8 +89,6 @@ export const verification: types.Verification = {
   type: types.VERIFICATION_TYPES.VOE,
   documents: [document],
   additional_information: 'Notes about the verification',
-  // cancellation_reason: CANCELLATION_REASONS;
-  // cancellation_details?: string;
 };
 
 export const cancelledVerification: types.Verification = {
