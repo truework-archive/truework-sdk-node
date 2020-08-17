@@ -1,4 +1,21 @@
 import * as types from '../types';
+import * as constants from './constants';
+
+export const error: types.SDKError = {
+  error: {
+    message: 'error', // a helpful message, will differ by request
+  },
+};
+
+// example for a verifications.create() request missing the "type" field
+export const errorWithFields: types.SDKError = {
+  error: {
+    message: 'Invalid field values provided',
+    invalid_fields: {
+      type: ['This field is required.'],
+    },
+  },
+};
 
 export const company: types.Company = {
   id: '2',
@@ -79,7 +96,7 @@ export const turnaroundTime: types.TurnaroundTime = {
 };
 
 export const verification: types.Verification = {
-  id: 'AAAAAAAAAOoAAaDBFruDgadDkwPP0yVjCGf5rWapD3rzwqq5fZT6sqri',
+  id: constants.VALID_VERIFICATION_ID,
   state: types.VERIFICATION_STATES.PENDING_APPROVAL,
   price,
   turnaround_time: turnaroundTime,
@@ -92,7 +109,7 @@ export const verification: types.Verification = {
 };
 
 export const cancelledVerification: types.Verification = {
-  id: 'AAAAAAAAAOoAAaDBFruDgadDkwPP0yVjCGf5rWapD3rzwqq5fZT6sqri',
+  id: constants.VALID_VERIFICATION_ID,
   state: types.VERIFICATION_STATES.CANCELED,
   price,
   turnaround_time: turnaroundTime,
@@ -112,7 +129,7 @@ export const report: types.ResponseReportGet = {
   verification_request: {
     type: types.VERIFICATION_TYPES.VOE,
     created: new Date().toString(),
-    id: 'AAAAAAAAAOoAAaDBFruDgadDkwPP0yVjCGf5rWapD3rzwqq5fZT6sqri',
+    id: constants.VALID_VERIFICATION_ID,
   },
   employer: employer,
   employee: employee,

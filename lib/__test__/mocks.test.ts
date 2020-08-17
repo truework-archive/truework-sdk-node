@@ -1,13 +1,13 @@
 import ava, { TestInterface } from 'ava';
+import { HTTPError } from 'got';
 
 import { truework, TrueworkSDK } from '../';
 import * as types from '../types';
 import * as requests from '../mocks/requests';
+import * as constants from '../mocks/constants';
 
 const test = ava as TestInterface<{ client: TrueworkSDK }>;
 const baseURL = 'https://api.truework.com/';
-const VERIFICATION_ID =
-  'AAAAAAAAAOoAAaDBFruDgadDkwPP0yVjCGf5rWapD3rzwqq5fZT6sqri';
 
 test.before(t => {
   t.context.client = truework({
@@ -28,6 +28,22 @@ test('verifications.create - reflects submitted data', async t => {
 
   t.is(res.body.type, requests.verification.type);
   t.is(res.body.target.first_name, requests.verification.target.first_name);
+});
+test('verifications.create - missing field', async t => {
+  const { client } = t.context;
+
+  const request = { ...requests.verification };
+  delete request.type;
+
+  try {
+    await client.verifications.create(request);
+  } catch (e) {
+    if (e instanceof HTTPError) {
+      const res = e.response.body as types.SDKError;
+
+      t.truthy(res.error?.invalid_fields?.type);
+    }
+  }
 });
 
 /*
@@ -75,10 +91,25 @@ test('verifications.getOne', async t => {
   const { client } = t.context;
 
   const res = await client.verifications.getOne({
-    id: VERIFICATION_ID,
+    id: constants.VALID_VERIFICATION_ID,
   });
 
-  t.is(res.body.id, VERIFICATION_ID);
+  t.is(res.body.id, constants.VALID_VERIFICATION_ID);
+});
+test('verifications.getOne - invalid', async t => {
+  const { client } = t.context;
+
+  try {
+    await client.verifications.getOne({
+      id: constants.INVALID_VERIFICATION_ID,
+    });
+  } catch (e) {
+    if (e instanceof HTTPError) {
+      const res = e.response.body as types.SDKError;
+
+      t.truthy(res.error.message);
+    }
+  }
 });
 
 /*
@@ -89,11 +120,27 @@ test('verifications.cancel', async t => {
   const { client } = t.context;
 
   const res = await client.verifications.cancel({
-    id: VERIFICATION_ID,
+    id: constants.VALID_VERIFICATION_ID,
     cancellationReason: types.CANCELLATION_REASONS.OTHER,
   });
 
   t.is(res.body, '');
+});
+test('verifications.cancel - invalid', async t => {
+  const { client } = t.context;
+
+  try {
+    await client.verifications.cancel({
+      id: constants.INVALID_VERIFICATION_ID,
+      cancellationReason: types.CANCELLATION_REASONS.OTHER,
+    });
+  } catch (e) {
+    if (e instanceof HTTPError) {
+      const res = e.response.body as types.SDKError;
+
+      t.truthy(res.error.message);
+    }
+  }
 });
 
 /*
@@ -104,10 +151,25 @@ test('verifications.getReport', async t => {
   const { client } = t.context;
 
   const res = await client.verifications.getReport({
-    id: VERIFICATION_ID,
+    id: constants.VALID_VERIFICATION_ID,
   });
 
-  t.is(res.body.verification_request.id, VERIFICATION_ID);
+  t.is(res.body.verification_request.id, constants.VALID_VERIFICATION_ID);
+});
+test('verifications.getReport - invalid', async t => {
+  const { client } = t.context;
+
+  try {
+    await client.verifications.getReport({
+      id: constants.INVALID_VERIFICATION_ID,
+    });
+  } catch (e) {
+    if (e instanceof HTTPError) {
+      const res = e.response.body as types.SDKError;
+
+      t.truthy(res.error.message);
+    }
+  }
 });
 
 /*

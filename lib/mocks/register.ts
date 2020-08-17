@@ -15,9 +15,9 @@ export function register () {
   nock('https://api.truework.com/')
     .persist()
     .get(/verification\-requests\/[^\/]+\/report/)
-    .reply(200, uri => {
+    .reply((uri, body, cb) => {
       const [, id] = uri.match(/verification\-requests\/([^\/]+)\//) || [];
-      return responses.verifications.getReport({ id });
+      cb(null, responses.verifications.getReport({ id }));
     });
 
   /*
@@ -26,7 +26,10 @@ export function register () {
   nock('https://api.truework.com/')
     .persist()
     .put(/verification\-requests\/[^\/]+\/cancel/)
-    .reply(200);
+    .reply((uri, body, cb) => {
+      const [, id] = uri.match(/verification\-requests\/([^\/]+)\//) || [];
+      cb(null, responses.verifications.cancel({ id }));
+    });
 
   /*
    * Verifications Get One
@@ -34,9 +37,9 @@ export function register () {
   nock('https://api.truework.com/')
     .persist()
     .get(/verification\-requests\/[^\/]+\//)
-    .reply(200, uri => {
+    .reply((uri, body, cb) => {
       const [, id] = uri.match(/verification\-requests\/([^\/]+)\//) || [];
-      return responses.verifications.getOne({ id });
+      cb(null, responses.verifications.getOne({ id }));
     });
 
   /*
@@ -57,8 +60,11 @@ export function register () {
   nock('https://api.truework.com/')
     .persist()
     .post('/verification-requests/')
-    .reply(201, (uri, body: types.RequestVerificationsCreate) => {
-      return responses.verifications.create(body);
+    .reply((uri, body, cb) => {
+      cb(
+        null,
+        responses.verifications.create(body as types.RequestVerificationsCreate)
+      );
     });
 
   /*

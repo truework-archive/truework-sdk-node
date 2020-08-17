@@ -1,9 +1,14 @@
 import * as types from '../types';
 import * as objects from './objects';
+import * as constants from './constants';
 import { createPaginatedResponse } from './util';
 
 export const verifications = {
-  create (data: types.RequestVerificationsCreate) {
+  create (
+    data: types.RequestVerificationsCreate
+  ): [number, types.ResponseVerificationsCreate | types.SDKError] {
+    const success = !!data.type ? true : false;
+
     const res: types.Verification = {
       id: objects.verification.id,
       state: objects.verification.state,
@@ -22,7 +27,7 @@ export const verifications = {
       res.additional_information = data.additional_information;
     }
 
-    return res;
+    return [success ? 201 : 400, success ? res : objects.errorWithFields];
   },
   get (data: types.RequestVerificationsGet) {
     const v = objects.verification;
@@ -33,20 +38,54 @@ export const verifications = {
 
     return createPaginatedResponse(v, data);
   },
-  getOne ({ id }: { id: string }) {
-    return {
-      ...objects.verification,
-      id: id,
-    };
+  cancel ({
+    id,
+  }: {
+    id: string;
+  }): [number, types.ResponseVerificationsCancel | types.SDKError] {
+    const success = id === constants.VALID_VERIFICATION_ID;
+
+    return [
+      success ? 200 : 404,
+      success ? '' : objects.error, // empty string is platform default body value
+    ];
   },
-  getReport ({ id }: { id: string }) {
-    return {
-      ...objects.report,
-      verification_request: {
-        ...objects.report.verification_request,
-        id,
-      },
-    };
+  getOne ({
+    id,
+  }: {
+    id: string;
+  }): [number, types.ResponseVerificationsGetOne | types.SDKError] {
+    const success = id === constants.VALID_VERIFICATION_ID;
+
+    return [
+      success ? 200 : 404,
+      success
+        ? {
+            ...objects.verification,
+            id: id,
+          }
+        : objects.error,
+    ];
+  },
+  getReport ({
+    id,
+  }: {
+    id: string;
+  }): [number, types.ResponseReportGet | types.SDKError] {
+    const success = id === constants.VALID_VERIFICATION_ID;
+
+    return [
+      success ? 200 : 404,
+      success
+        ? {
+            ...objects.report,
+            verification_request: {
+              ...objects.report.verification_request,
+              id,
+            },
+          }
+        : objects.error,
+    ];
   },
 };
 

@@ -87,6 +87,7 @@ export type RequestCompaniesGet = {
 export type ResponseVerificationsCreate = Verification;
 export type ResponseVerificationsGet = PaginatedResponse<Verification>;
 export type ResponseVerificationsGetOne = Verification;
+export type ResponseVerificationsCancel = string;
 export type ResponseReportGet = {
   created: string;
   current_as_of?: string;
@@ -95,6 +96,15 @@ export type ResponseReportGet = {
   employee: Employee;
 };
 export type ResponseCompaniesGet = PaginatedResponse<CompanySearchResult>;
+
+export type InvalidFields = { [field: string]: InvalidFields | string[] };
+
+export type SDKError = {
+  error: {
+    message: string;
+    invalid_fields?: InvalidFields;
+  };
+};
 
 /* ----- OTHER TYPES - ALPHABETICAL ----- */
 
