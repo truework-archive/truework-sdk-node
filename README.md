@@ -32,6 +32,16 @@ const { truework } = require('@truework/sdk');
 const client = truework({ token: TRUEWORK_ACCESS_TOKEN });
 ```
 
+By default, the SDK will use the latest version of our API. To request a
+different version, pass it when configuring your client.
+
+```ts
+const client = truework({
+  token: TRUEWORK_ACCESS_TOKEN,
+  version: '2019-10-15',
+});
+```
+
 # Terminology
 
 Please review the [API Documentation](https://www.truework.com/docs/api) for all
@@ -188,6 +198,15 @@ This SDK provides a naive "mock" mode that can be used for basic testing during
 CI, etc. It is _stateless_, meaning no data is persisted between API calls. When
 enabled, each SDK method will either return stub objects, or simple reflections
 of the data submitted.
+
+To enable mock mode, initialize your SDK client like this:
+
+```ts
+const client = truework({
+  token: TRUEWORK_ACCESS_TOKEN,
+  mock: true,
+});
+```
 
 ## Verification Mocks
 
