@@ -43,7 +43,7 @@ export const verifications = {
   }: {
     id: string;
   }): [number, types.ResponseVerificationsCancel | types.SDKError] {
-    const success = id === constants.VALID_VERIFICATION_ID;
+    const success = id !== constants.INVALID_VERIFICATION_ID;
 
     return [
       success ? 200 : 404,
@@ -55,7 +55,7 @@ export const verifications = {
   }: {
     id: string;
   }): [number, types.ResponseVerificationsGetOne | types.SDKError] {
-    const success = id === constants.VALID_VERIFICATION_ID;
+    const success = id !== constants.INVALID_VERIFICATION_ID;
 
     return [
       success ? 200 : 404,
@@ -72,7 +72,7 @@ export const verifications = {
   }: {
     id: string;
   }): [number, types.ResponseReportGet | types.SDKError] {
-    const success = id === constants.VALID_VERIFICATION_ID;
+    const success = id !== constants.INVALID_VERIFICATION_ID;
 
     return [
       success ? 200 : 404,
