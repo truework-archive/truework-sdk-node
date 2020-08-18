@@ -4,20 +4,7 @@ import * as qs from 'query-string';
 
 import pkg from '../package.json';
 import { invalid, invalidParams, invalidField, withQueryParams } from './utils';
-import {
-  CANCELLATION_REASONS,
-  RequestVerificationsCreate,
-  RequestVerificationsGet,
-  RequestVerificationsGetOne,
-  RequestVerificationsCancel,
-  RequestVerificationsGetReport,
-  RequestCompaniesGet,
-  ResponseVerificationsCreate,
-  ResponseVerificationsGet,
-  ResponseVerificationsGetOne,
-  ResponseReportGet,
-  ResponseCompaniesGet,
-} from './types';
+import * as types from './types';
 import { register } from './mocks/register';
 
 export function client (config: {
@@ -53,19 +40,19 @@ export function client (config: {
 
   return {
     verifications: {
-      create (params: RequestVerificationsCreate) {
+      create (params: types.RequestVerificationsCreate) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.create')
         );
 
-        return client.post<ResponseVerificationsCreate>({
+        return client.post<types.ResponseVerificationsCreate>({
           url: 'verification-requests/',
           json: params,
           responseType: 'json',
         });
       },
-      get (params: RequestVerificationsGet = {} as any) {
+      get (params: types.RequestVerificationsGet = {} as any) {
         assert(
           params === undefined || typeof params === 'object',
           invalidParams('verifications.get')
@@ -82,11 +69,11 @@ export function client (config: {
           })
         );
 
-        return client.get<ResponseVerificationsGet>(url, {
+        return client.get<types.ResponseVerificationsGet>(url, {
           responseType: 'json',
         });
       },
-      getOne (params: RequestVerificationsGetOne) {
+      getOne (params: types.RequestVerificationsGetOne) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.getOne')
@@ -96,14 +83,14 @@ export function client (config: {
 
         assert(id, invalidField('verifications.getOne', 'id'));
 
-        return client.get<ResponseVerificationsGetOne>(
+        return client.get<types.ResponseVerificationsGetOne>(
           `verification-requests/${id}/`,
           {
             responseType: 'json',
           }
         );
       },
-      cancel (params: RequestVerificationsCancel) {
+      cancel (params: types.RequestVerificationsCancel) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.cancel')
@@ -114,7 +101,9 @@ export function client (config: {
         assert(id, invalidField('verifications.cancel', 'id'));
         assert(
           cancellationReason &&
-            Object.values(CANCELLATION_REASONS).includes(cancellationReason),
+            Object.values(types.CANCELLATION_REASONS).includes(
+              cancellationReason
+            ),
           invalidField('verifications.cancel', 'cancellationReason')
         );
 
@@ -127,7 +116,7 @@ export function client (config: {
           responseType: 'json',
         });
       },
-      getReport (params: RequestVerificationsGetReport) {
+      getReport (params: types.RequestVerificationsGetReport) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.getReport')
@@ -137,7 +126,7 @@ export function client (config: {
 
         assert(id, invalidField('verifications.getReport', 'id'));
 
-        return client.get<ResponseReportGet>(
+        return client.get<types.ResponseReportGet>(
           `verification-requests/${id}/report/`,
           {
             responseType: 'json',
@@ -146,7 +135,7 @@ export function client (config: {
       },
     },
     companies: {
-      get (params: RequestCompaniesGet) {
+      get (params: types.RequestCompaniesGet) {
         assert(typeof params === 'object', invalidParams('companies.get'));
 
         const { query, offset, limit } = params;
@@ -162,7 +151,7 @@ export function client (config: {
           })
         );
 
-        return client.get<ResponseCompaniesGet>(url, {
+        return client.get<types.ResponseCompaniesGet>(url, {
           responseType: 'json',
         });
       },
