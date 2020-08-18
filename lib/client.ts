@@ -4,7 +4,6 @@ import * as qs from 'query-string';
 
 import pkg from '../package.json';
 import { invalid, invalidParams, invalidField, withQueryParams } from './utils';
-import { handleResponse } from './response';
 import {
   CANCELLATION_REASONS,
   RequestVerificationsCreate,
@@ -60,13 +59,11 @@ export function client (config: {
           invalidParams('verifications.create')
         );
 
-        return handleResponse(() =>
-          client.post<ResponseVerificationsCreate>({
-            url: 'verification-requests/',
-            json: params,
-            responseType: 'json',
-          })
-        );
+        return client.post<ResponseVerificationsCreate>({
+          url: 'verification-requests/',
+          json: params,
+          responseType: 'json',
+        });
       },
       get (params: RequestVerificationsGet = {} as any) {
         assert(
@@ -85,11 +82,9 @@ export function client (config: {
           })
         );
 
-        return handleResponse(() =>
-          client.get<ResponseVerificationsGet>(url, {
-            responseType: 'json',
-          })
-        );
+        return client.get<ResponseVerificationsGet>(url, {
+          responseType: 'json',
+        });
       },
       getOne (params: RequestVerificationsGetOne) {
         assert(
@@ -101,13 +96,11 @@ export function client (config: {
 
         assert(id, invalidField('verifications.getOne', 'id'));
 
-        return handleResponse(() =>
-          client.get<ResponseVerificationsGetOne>(
-            `verification-requests/${id}/`,
-            {
-              responseType: 'json',
-            }
-          )
+        return client.get<ResponseVerificationsGetOne>(
+          `verification-requests/${id}/`,
+          {
+            responseType: 'json',
+          }
         );
       },
       cancel (params: RequestVerificationsCancel) {
@@ -125,16 +118,14 @@ export function client (config: {
           invalidField('verifications.cancel', 'cancellationReason')
         );
 
-        return handleResponse(() =>
-          client.put({
-            url: `verification-requests/${id}/cancel/`,
-            json: {
-              cancellation_reason: cancellationReason,
-              cancellation_details: cancellationDetails,
-            },
-            responseType: 'json',
-          })
-        );
+        return client.put({
+          url: `verification-requests/${id}/cancel/`,
+          json: {
+            cancellation_reason: cancellationReason,
+            cancellation_details: cancellationDetails,
+          },
+          responseType: 'json',
+        });
       },
       getReport (params: RequestVerificationsGetReport) {
         assert(
@@ -146,10 +137,11 @@ export function client (config: {
 
         assert(id, invalidField('verifications.getReport', 'id'));
 
-        return handleResponse(() =>
-          client.get<ResponseReportGet>(`verification-requests/${id}/report/`, {
+        return client.get<ResponseReportGet>(
+          `verification-requests/${id}/report/`,
+          {
             responseType: 'json',
-          })
+          }
         );
       },
     },
@@ -170,11 +162,9 @@ export function client (config: {
           })
         );
 
-        return handleResponse(() =>
-          client.get<ResponseCompaniesGet>(url, {
-            responseType: 'json',
-          })
-        );
+        return client.get<ResponseCompaniesGet>(url, {
+          responseType: 'json',
+        });
       },
     },
   };
