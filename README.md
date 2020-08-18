@@ -9,6 +9,9 @@ The official Truework API Node.js SDK.
 - [Usage](#getting-started)
   - [Verifications](#verifications)
   - [Companies](#companies)
+- [Testing](#testing)
+  - [Verifications](#verification-mocks)
+  - [Companies](#company-mocks)
 - [Contributing](#contributing)
 
 ## Resources
@@ -177,6 +180,117 @@ Returns a `PaginatedResponse` containing an array of `Company`s.
 
 ```ts
 await client.companies.get({ query: 'USWNT' });
+```
+
+# Testing
+
+This SDK provides a naive "mock" mode that can be used for basic testing during
+CI, etc. It is _stateless_, meaning no data is persisted between API calls. When
+enabled, each SDK method will either return stub objects, or simple reflections
+of the data submitted.
+
+## Verification Mocks
+
+### `verifications.get`
+
+Returns a stubbed array of verifications, respective of all query params.
+
+```ts
+const res = await client.verifications.get({ state: 'processing', limit: 5 });
+
+res.body.results.length; // => 5
+res.body.results[0].state; // => processing
+```
+
+### `verifications.getOne`
+
+Returns a stubbed verification object with the same `id` as is passed to
+`getOne({ id })`.
+
+#### Error States
+
+Any `id` value is valid, except `"AAAA"`, which will trigger a `404` error
+response.
+
+```ts
+try {
+  await client.verifications.getOne({ id: 'AAAA' });
+} catch (e) {
+  console.log(e.response); // error response body
+}
+```
+
+### `verifications.create`
+
+Returns a stubbed verification object.
+
+#### Error States
+
+To trigger an error response, do not pass a `type` property.
+
+```ts
+try {
+  await client.verifications.create(
+    // type: 'employment',
+    permissible_purpose: 'employment',
+    target: {
+      first_name: 'Megan',
+      last_name: 'Rapinoe',
+      social_security_number: '123121234',
+      company: {
+        name: 'USWNT',
+      },
+    },
+    additional_information: 'Lorem ipsum dolor...',
+  })
+} catch (e) {
+  console.log(e.response) // error response body
+}
+```
+
+### `verifications.cancel`
+
+Returns `200` if successful.
+
+#### Error States
+
+Any `id` value is valid, except `"AAAA"`, which will trigger an error response.
+
+```ts
+try {
+  await client.verifications.cancel({ id: 'AAAA' });
+} catch (e) {
+  console.log(e.response); // error response body
+}
+```
+
+### `verifications.getReport`
+
+Returns a stubbed report object if successful.
+
+#### Error States
+
+Any `id` value is valid, except `"AAAA"`, which will trigger an error response.
+
+```ts
+try {
+  await client.verifications.getReport({ id: 'AAAA' });
+} catch (e) {
+  console.log(e.response); // error response body
+}
+```
+
+## Company Mocks
+
+### `companies.get`
+
+Returns a stubbed array of companies, respective of `limit` and `offset` query
+params.
+
+```ts
+const res = await client.companies.get({ limit: 5 });
+
+res.body.results.length; // => 5
 ```
 
 ## Contributing
