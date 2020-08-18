@@ -4,27 +4,17 @@ import * as qs from 'query-string';
 
 import pkg from '../package.json';
 import { invalid, invalidParams, invalidField, withQueryParams } from './utils';
-import { handleResponse } from './response';
-import {
-  CANCELLATION_REASONS,
-  RequestVerificationsCreate,
-  RequestVerificationsGet,
-  RequestVerificationsGetOne,
-  RequestVerificationsCancel,
-  RequestVerificationsGetReport,
-  RequestCompaniesGet,
-  ResponseVerificationsCreate,
-  ResponseVerificationsGet,
-  ResponseVerificationsGetOne,
-  ResponseReportGet,
-  ResponseCompaniesGet,
-} from './types';
+import * as types from './types';
+import { register } from './mocks/register';
 
 export function client (config: {
   token: string;
   baseURL?: string;
   version?: string;
+  mock?: boolean;
 }) {
+  if (config.mock) register();
+
   assert(
     typeof config === 'object',
     invalid('client was initiated without a config object')
@@ -50,24 +40,22 @@ export function client (config: {
 
   return {
     verifications: {
-      create (params: RequestVerificationsCreate) {
+      create (params: types.RequestVerificationsCreate) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.create')
         );
 
-        return handleResponse(() =>
-          client.post<ResponseVerificationsCreate>({
-            url: 'verification-requests/',
-            json: params,
-            responseType: 'json',
-          })
-        );
+        return client.post<types.ResponseVerificationsCreate>({
+          url: 'verification-requests/',
+          json: params,
+          responseType: 'json',
+        });
       },
-      get (params: RequestVerificationsGet = {} as any) {
+      get (params: types.RequestVerificationsGet = {} as any) {
         assert(
           params === undefined || typeof params === 'object',
-          invalidParams('verifications.getOne')
+          invalidParams('verifications.get')
         );
 
         const { state, limit, offset } = params;
@@ -81,13 +69,11 @@ export function client (config: {
           })
         );
 
-        return handleResponse(() =>
-          client.get<ResponseVerificationsGet>(url, {
-            responseType: 'json',
-          })
-        );
+        return client.get<types.ResponseVerificationsGet>(url, {
+          responseType: 'json',
+        });
       },
-      getOne (params: RequestVerificationsGetOne) {
+      getOne (params: types.RequestVerificationsGetOne) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.getOne')
@@ -97,16 +83,14 @@ export function client (config: {
 
         assert(id, invalidField('verifications.getOne', 'id'));
 
-        return handleResponse(() =>
-          client.get<ResponseVerificationsGetOne>(
-            `verification-requests/${id}/`,
-            {
-              responseType: 'json',
-            }
-          )
+        return client.get<types.ResponseVerificationsGetOne>(
+          `verification-requests/${id}/`,
+          {
+            responseType: 'json',
+          }
         );
       },
-      cancel (params: RequestVerificationsCancel) {
+      cancel (params: types.RequestVerificationsCancel) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.cancel')
@@ -117,22 +101,22 @@ export function client (config: {
         assert(id, invalidField('verifications.cancel', 'id'));
         assert(
           cancellationReason &&
-            Object.values(CANCELLATION_REASONS).includes(cancellationReason),
+            Object.values(types.CANCELLATION_REASONS).includes(
+              cancellationReason
+            ),
           invalidField('verifications.cancel', 'cancellationReason')
         );
 
-        return handleResponse(() =>
-          client.put({
-            url: `verification-requests/${id}/cancel/`,
-            json: {
-              cancellation_reason: cancellationReason,
-              cancellation_details: cancellationDetails,
-            },
-            responseType: 'json',
-          })
-        );
+        return client.put({
+          url: `verification-requests/${id}/cancel/`,
+          json: {
+            cancellation_reason: cancellationReason,
+            cancellation_details: cancellationDetails,
+          },
+          responseType: 'json',
+        });
       },
-      getReport (params: RequestVerificationsGetReport) {
+      getReport (params: types.RequestVerificationsGetReport) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.getReport')
@@ -142,15 +126,16 @@ export function client (config: {
 
         assert(id, invalidField('verifications.getReport', 'id'));
 
-        return handleResponse(() =>
-          client.get<ResponseReportGet>(`verification-requests/${id}/report/`, {
+        return client.get<types.ResponseReportGet>(
+          `verification-requests/${id}/report/`,
+          {
             responseType: 'json',
-          })
+          }
         );
       },
     },
     companies: {
-      get (params: RequestCompaniesGet) {
+      get (params: types.RequestCompaniesGet) {
         assert(typeof params === 'object', invalidParams('companies.get'));
 
         const { query, offset, limit } = params;
@@ -166,11 +151,9 @@ export function client (config: {
           })
         );
 
-        return handleResponse(() =>
-          client.get<ResponseCompaniesGet>(url, {
-            responseType: 'json',
-          })
-        );
+        return client.get<types.ResponseCompaniesGet>(url, {
+          responseType: 'json',
+        });
       },
     },
   };

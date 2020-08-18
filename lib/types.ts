@@ -1,10 +1,10 @@
-/* ----- CONSTS ----- */
-
+/*
+ * Enums
+ */
 export enum VERIFICATION_TYPES {
   VOI = 'employment-income',
   VOE = 'employment',
 }
-
 export enum CANCELLATION_REASONS {
   IMMEDIATE = 'immediate',
   HIGH_TURNAROUND_TIME = 'high-turnaround-time',
@@ -12,7 +12,6 @@ export enum CANCELLATION_REASONS {
   WRONG_INFO = 'wrong-info',
   OTHER = 'other',
 }
-
 export enum VERIFICATION_STATES {
   PENDING_APPROVAL = 'pending-approval',
   ACTION_REQUIRED = 'action-required',
@@ -21,7 +20,6 @@ export enum VERIFICATION_STATES {
   COMPLETED = 'completed',
   CANCELED = 'canceled',
 }
-
 export enum PERMISSIBLE_PURPOSES {
   CHILD_SUPPORT = 'child-support',
   CREDIT_APPLICATION = 'credit-application',
@@ -35,9 +33,15 @@ export enum PERMISSIBLE_PURPOSES {
   RISK_ASSESSMENT = 'risk-assessment',
   SUBPOENA = 'subpoena',
 }
+export enum EMPLOYEE_STATUSES {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  UNKNOWN = 'unknown',
+}
 
-/* ----- GENERICS ----- */
-
+/*
+ * Generics
+ */
 export type PaginatedResponse<T> = {
   results: T[];
   next?: string;
@@ -45,8 +49,9 @@ export type PaginatedResponse<T> = {
   count: number;
 };
 
-/* ----- REQUESTS ----- */
-
+/*
+ * Requests method shapes
+ */
 export type RequestVerificationsGet = {
   state?: VERIFICATION_STATES;
   offset?: number;
@@ -76,11 +81,13 @@ export type RequestCompaniesGet = {
   limit?: number;
 };
 
-/* ----- RESPONSES ----- */
-
+/*
+ * API Responses
+ */
 export type ResponseVerificationsCreate = Verification;
 export type ResponseVerificationsGet = PaginatedResponse<Verification>;
 export type ResponseVerificationsGetOne = Verification;
+export type ResponseVerificationsCancel = string;
 export type ResponseReportGet = {
   created: string;
   current_as_of?: string;
@@ -90,101 +97,101 @@ export type ResponseReportGet = {
 };
 export type ResponseCompaniesGet = PaginatedResponse<CompanySearchResult>;
 
-/* ----- OTHER TYPES - ALPHABETICAL ----- */
+/*
+ * Errors
+ */
+export type InvalidFields = { [field: string]: InvalidFields | string[] };
+export type SDKError = {
+  error: {
+    message: string;
+    invalid_fields?: InvalidFields;
+  };
+};
 
-export interface Address {
+/**
+ * Other - alphabetical
+ */
+export type Address = {
   line_one: string;
   line_two: string;
   city: string;
   state: string;
   country: string;
   postal_code: string;
-}
-
-export interface Company {
+};
+export type Company = {
   id: string;
   name: string;
-}
-
-export interface CompanySearchResult {
+};
+export type CompanySearchResult = {
   id: string;
   name: string;
   domain?: string;
-}
-
-export interface Document {
+};
+export type Document = {
   filename: string;
   content: string;
-}
-
-export interface Earnings {
+};
+export type Earnings = {
   year: string;
   base: string;
   overtime: string;
   commission: string;
   bonus: string;
+  other: string;
   total: string;
-}
-
-export interface Employee {
+};
+export type Employee = {
   first_name: string;
   last_name: string;
   address: Address;
-  status: 'active' | 'inactive' | 'unknown';
-  start_date: string;
-  termination_date: string;
+  status: EMPLOYEE_STATUSES;
+  start_date?: string;
+  termination_date?: string;
   social_security_number: string;
-  earnings: Earnings[];
+  earnings?: Earnings[];
   positions: Position[];
   salary: Salary;
-}
-
-export interface Employer {
+};
+export type Employer = {
   name: string;
   address: Address;
-}
-
-export interface Position {
+};
+export type Position = {
   title: string;
   start_date: string;
-  employment_type:
+  employment_type?:
     | 'regular-full-time'
     | 'regular-part-time'
     | 'contractor'
     | 'other';
-}
-
-export interface Price {
+};
+export type Price = {
   amount: string;
   currency: string;
-}
-
+};
 export type ReportVerificationRequest = {
   type: VERIFICATION_TYPES;
   created: string;
   id: string;
 };
-
-export interface Salary {
+export type Salary = {
   gross_pay: string;
   pay_frequency: string;
   hours_per_week: string;
-}
-
-export interface Target {
+};
+export type Target = {
   first_name: string;
   last_name: string;
   social_security_number: string;
   contact_email?: string;
   company: Pick<Company, 'id'> | Pick<Company, 'name'> | Company; // one of id or name is required
-}
-
-export interface TurnaroundTime {
+};
+export type TurnaroundTime = {
   upper_bound?: string;
   lower_bound?: string;
-}
-
-export interface Verification {
+};
+export type Verification = {
   id: string;
   state: string;
   price: Price;
@@ -197,4 +204,4 @@ export interface Verification {
   additional_information?: string;
   cancellation_reason?: CANCELLATION_REASONS;
   cancellation_details?: string;
-}
+};

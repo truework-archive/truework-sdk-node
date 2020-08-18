@@ -1,22 +1,10 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "esnext",
-    "jsx": "preserve",
-    "lib": ["es2015"],
+    "declaration": true,
     "strict": true,
-    "sourceMap": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "preserveConstEnums": true,
-    "removeComments": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "skipLibCheck": true
   }
 }
