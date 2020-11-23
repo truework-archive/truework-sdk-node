@@ -18,6 +18,7 @@ export const verifications = {
       target: data.target,
       permissible_purpose: data.permissible_purpose,
       type: data.type,
+      date_of_completion: null,
     };
 
     if (data.documents) {

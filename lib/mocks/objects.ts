@@ -106,6 +106,7 @@ export const verification: types.Verification = {
   type: types.VERIFICATION_TYPES.VOE,
   documents: [document],
   additional_information: 'Notes about the verification',
+  date_of_completion: null,
 };
 
 export const cancelledVerification: types.Verification = {
@@ -121,6 +122,7 @@ export const cancelledVerification: types.Verification = {
   additional_information: 'Notes about the verification',
   cancellation_reason: types.CANCELLATION_REASONS.OTHER,
   cancellation_details: 'Cancellation in more detail',
+  date_of_completion: null,
 };
 
 export const report: types.ResponseReportGet = {
