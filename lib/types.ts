@@ -200,6 +200,7 @@ export type Verification = {
   target: Target;
   permissible_purpose: PERMISSIBLE_PURPOSES;
   type: VERIFICATION_TYPES;
+  date_of_completion: string | null;
   documents?: Document[];
   additional_information?: string;
   cancellation_reason?: CANCELLATION_REASONS;
