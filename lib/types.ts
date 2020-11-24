@@ -146,7 +146,7 @@ export type Employee = {
   last_name: string;
   address: Address;
   status: EMPLOYEE_STATUSES;
-  start_date?: string;
+  hired_date?: string;
   termination_date?: string;
   social_security_number: string;
   earnings?: Earnings[];
