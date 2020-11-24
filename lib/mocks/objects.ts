@@ -87,6 +87,7 @@ export const employee: types.Employee = {
   social_security_number: '***-**-1234',
   positions: [position],
   earnings: [earning],
+  hired_date: '2016-02-11',
   salary,
 };
 
