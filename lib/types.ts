@@ -37,6 +37,13 @@ export enum EMPLOYEE_STATUSES {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
   UNKNOWN = 'unknown',
+  FURLOUGHED_COVID = 'furloughed-covid',
+  NON_EMPLOYEE = 'non-employee',
+}
+export enum PAY_REDUCED_COVID {
+  YES = 'yes',
+  NO = 'no',
+  UNKNOWN = 'unknown',
 }
 
 /*
@@ -94,6 +101,8 @@ export type ResponseReportGet = {
   verification_request: ReportVerificationRequest;
   employer: Employer;
   employee: Employee;
+  additional_notes?: string;
+  respondent?: Respondent;
 };
 export type ResponseCompaniesGet = PaginatedResponse<CompanySearchResult>;
 
@@ -164,7 +173,8 @@ export type Position = {
     | 'regular-full-time'
     | 'regular-part-time'
     | 'contractor'
-    | 'other';
+    | 'other'
+    | 'no-answer';
 };
 export type Price = {
   amount: string;
@@ -175,10 +185,15 @@ export type ReportVerificationRequest = {
   created: string;
   id: string;
 };
+export type Respondent = {
+  full_name?: string;
+  title?: string;
+};
 export type Salary = {
   gross_pay: string;
   pay_frequency: string;
   hours_per_week: string;
+  reduced_covid?: PAY_REDUCED_COVID;
 };
 export type Target = {
   first_name: string;

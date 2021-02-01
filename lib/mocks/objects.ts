@@ -1,4 +1,5 @@
 import * as types from '../types';
+import { PAY_REDUCED_COVID } from '../types';
 import * as constants from './constants';
 
 export const error: types.SDKError = {
@@ -63,10 +64,16 @@ export const price: types.Price = {
   currency: 'USD',
 };
 
+export const respondent: types.Respondent = {
+  full_name: 'First Last',
+  title: 'Some Title',
+};
+
 export const salary: types.Salary = {
   gross_pay: '123456.00',
   pay_frequency: 'annually',
   hours_per_week: '40',
+  reduced_covid: PAY_REDUCED_COVID.NO,
 };
 
 export const earning: types.Earnings = {
@@ -136,4 +143,6 @@ export const report: types.ResponseReportGet = {
   },
   employer: employer,
   employee: employee,
+  additional_notes: 'some free form text',
+  respondent: respondent,
 };
