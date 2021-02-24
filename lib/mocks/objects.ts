@@ -67,6 +67,7 @@ export const salary: types.Salary = {
   gross_pay: '123456.00',
   pay_frequency: 'annually',
   hours_per_week: '40',
+  months_per_year: '9.5',
 };
 
 export const earning: types.Earnings = {
@@ -103,6 +104,7 @@ export const verification: types.Verification = {
   turnaround_time: turnaroundTime,
   created: '2020-08-11T15:14:51.444036Z',
   target: target,
+  loan_id: '12345',
   permissible_purpose: types.PERMISSIBLE_PURPOSES.EMPLOYMENT,
   type: types.VERIFICATION_TYPES.VOE,
   documents: [document],

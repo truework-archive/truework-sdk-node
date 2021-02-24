@@ -16,6 +16,7 @@ export const verifications = {
       turnaround_time: objects.verification.turnaround_time,
       created: new Date().toString(),
       target: data.target,
+      loan_id: data.loan_id,
       permissible_purpose: data.permissible_purpose,
       type: data.type,
       date_of_completion: null,
