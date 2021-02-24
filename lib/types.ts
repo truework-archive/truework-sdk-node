@@ -68,6 +68,7 @@ export type RequestVerificationsCancel = {
 export type RequestVerificationsCreate = {
   type: VERIFICATION_TYPES;
   permissible_purpose: PERMISSIBLE_PURPOSES;
+  loan_id: string;
   target: Target;
   documents?: Document[];
   additional_information?: string;
@@ -179,6 +180,7 @@ export type Salary = {
   gross_pay: string;
   pay_frequency: string;
   hours_per_week: string;
+  months_per_year: string;
 };
 export type Target = {
   first_name: string;
@@ -199,6 +201,7 @@ export type Verification = {
   created: string;
   target: Target;
   permissible_purpose: PERMISSIBLE_PURPOSES;
+  loan_id: string;
   type: VERIFICATION_TYPES;
   date_of_completion: string | null;
   documents?: Document[];
