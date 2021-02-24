@@ -68,8 +68,8 @@ export type RequestVerificationsCancel = {
 export type RequestVerificationsCreate = {
   type: VERIFICATION_TYPES;
   permissible_purpose: PERMISSIBLE_PURPOSES;
-  loan_id: string;
   target: Target;
+  loan_id?: string;
   documents?: Document[];
   additional_information?: string;
 };
@@ -201,9 +201,9 @@ export type Verification = {
   created: string;
   target: Target;
   permissible_purpose: PERMISSIBLE_PURPOSES;
-  loan_id: string;
   type: VERIFICATION_TYPES;
   date_of_completion: string | null;
+  loan_id?: string;
   documents?: Document[];
   additional_information?: string;
   cancellation_reason?: CANCELLATION_REASONS;
