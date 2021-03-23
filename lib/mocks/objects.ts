@@ -1,5 +1,6 @@
 import * as types from '../types';
 import * as constants from './constants';
+import { PAY_REDUCED_COVID } from '../types';
 
 export const error: types.SDKError = {
   error: {
@@ -63,10 +64,17 @@ export const price: types.Price = {
   currency: 'USD',
 };
 
+export const respondent: types.Respondent = {
+  full_name: 'First Last',
+  title: 'Some Title',
+};
+
 export const salary: types.Salary = {
   gross_pay: '123456.00',
   pay_frequency: 'annually',
   hours_per_week: '40',
+  months_per_year: '4.5',
+  reduced_covid: PAY_REDUCED_COVID.NO,
 };
 
 export const earning: types.Earnings = {
@@ -96,20 +104,6 @@ export const turnaroundTime: types.TurnaroundTime = {
   lower_bound: '2',
 };
 
-export const verification: types.Verification = {
-  id: constants.VALID_VERIFICATION_ID,
-  state: types.VERIFICATION_STATES.PENDING_APPROVAL,
-  price,
-  turnaround_time: turnaroundTime,
-  created: '2020-08-11T15:14:51.444036Z',
-  target: target,
-  permissible_purpose: types.PERMISSIBLE_PURPOSES.EMPLOYMENT,
-  type: types.VERIFICATION_TYPES.VOE,
-  documents: [document],
-  additional_information: 'Notes about the verification',
-  date_of_completion: null,
-};
-
 export const cancelledVerification: types.Verification = {
   id: constants.VALID_VERIFICATION_ID,
   state: types.VERIFICATION_STATES.CANCELED,
@@ -136,4 +130,23 @@ export const report: types.ResponseReportGet = {
   },
   employer: employer,
   employee: employee,
+  respondent: respondent,
+  du_reference_id: '12345',
+  additional_notes: 'some free form text',
+};
+
+export const verification: types.Verification = {
+  id: constants.VALID_VERIFICATION_ID,
+  state: types.VERIFICATION_STATES.PENDING_APPROVAL,
+  price,
+  turnaround_time: turnaroundTime,
+  created: '2020-08-11T15:14:51.444036Z',
+  target: target,
+  permissible_purpose: types.PERMISSIBLE_PURPOSES.EMPLOYMENT,
+  type: types.VERIFICATION_TYPES.VOE,
+  documents: [document],
+  additional_information: 'Notes about the verification',
+  date_of_completion: null,
+  reports: [report],
+  loan_id: '12345',
 };

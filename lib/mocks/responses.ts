@@ -27,6 +27,9 @@ export const verifications = {
     if (data.additional_information) {
       res.additional_information = data.additional_information;
     }
+    if (data.loan_id) {
+      res.loan_id = data.loan_id;
+    }
 
     return [success ? 201 : 400, success ? res : objects.errorWithFields];
   },

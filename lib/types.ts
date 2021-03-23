@@ -38,6 +38,11 @@ export enum EMPLOYEE_STATUSES {
   INACTIVE = 'inactive',
   UNKNOWN = 'unknown',
 }
+export enum PAY_REDUCED_COVID {
+  YES = 'yes',
+  NO = 'no',
+  UNKNOWN = 'unknown',
+}
 
 /*
  * Generics
@@ -71,6 +76,7 @@ export type RequestVerificationsCreate = {
   target: Target;
   documents?: Document[];
   additional_information?: string;
+  loan_id?: string;
 };
 export type RequestVerificationsGetReport = {
   id: string;
@@ -88,13 +94,7 @@ export type ResponseVerificationsCreate = Verification;
 export type ResponseVerificationsGet = PaginatedResponse<Verification>;
 export type ResponseVerificationsGetOne = Verification;
 export type ResponseVerificationsCancel = string;
-export type ResponseReportGet = {
-  created: string;
-  current_as_of?: string;
-  verification_request: ReportVerificationRequest;
-  employer: Employer;
-  employee: Employee;
-};
+export type ResponseReportGet = Report;
 export type ResponseCompaniesGet = PaginatedResponse<CompanySearchResult>;
 
 /*
@@ -170,22 +170,38 @@ export type Price = {
   amount: string;
   currency: string;
 };
+export type Report = {
+  created: string;
+  current_as_of?: string;
+  verification_request: ReportVerificationRequest;
+  employer: Employer;
+  employee: Employee;
+  additional_notes?: string;
+  respondent?: Respondent;
+  du_reference_id?: string;
+};
 export type ReportVerificationRequest = {
   type: VERIFICATION_TYPES;
   created: string;
   id: string;
 };
+export type Respondent = {
+  full_name?: string;
+  title?: string;
+};
 export type Salary = {
   gross_pay: string;
   pay_frequency: string;
   hours_per_week: string;
+  months_per_year?: string;
+  reduced_covid?: PAY_REDUCED_COVID;
 };
 export type Target = {
   first_name: string;
   last_name: string;
   social_security_number: string;
   contact_email?: string;
-  company: Pick<Company, 'id'> | Pick<Company, 'name'> | Company; // one of id or name is required
+  company?: Pick<Company, 'id'> | Pick<Company, 'name'> | Company;
 };
 export type TurnaroundTime = {
   upper_bound?: string;
@@ -205,4 +221,6 @@ export type Verification = {
   additional_information?: string;
   cancellation_reason?: CANCELLATION_REASONS;
   cancellation_details?: string;
+  loan_id?: string;
+  reports?: Report[];
 };

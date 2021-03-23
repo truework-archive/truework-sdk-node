@@ -95,6 +95,7 @@ test('verifications.getOne', async t => {
   });
 
   t.is(res.body.id, constants.VALID_VERIFICATION_ID);
+  t.assert(res.body.reports);
 });
 test('verifications.getOne - invalid', async t => {
   const { client } = t.context;
