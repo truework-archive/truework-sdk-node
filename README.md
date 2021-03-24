@@ -325,6 +325,9 @@ This repo uses [commitizen](https://github.com/commitizen/cz-cli) to nicely
 format commit messages. Upon making edits, stage your changes and simply run
 `git commit` to enter the commitizen UI in your terminal.
 
+**Note:** if you are not prompted with the commitizen UI, run `npm ci` to re-install
+and run `postinstall` hooks to set it up.
+
 ### Releases
 
 This project is versioned and published automatically using
