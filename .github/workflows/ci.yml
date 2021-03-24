@@ -1,32 +1,31 @@
-name: Truework Node.js SDK CI
+name: CI
 
 on:
-  push:
-    branches:
-      - master
-      - next
   pull_request:
     branches:
-      - master
-      - next
+      - '**'
 
 jobs:
   build:
+    name: Pre-release
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12
       - name: Installing dependencies
-        run: npm ci
-      - name: Build & Test
-        run: npm run build
+        run: npm i
       - name: Lint
         run: npm run lint
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm run test
+      - name: Release (dry run)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.TRUEWORK_TEAM_NPM_TOKEN }}
+        run: npx semantic-release -d

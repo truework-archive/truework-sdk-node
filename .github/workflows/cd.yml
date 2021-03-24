@@ -1,10 +1,12 @@
-name: Release
+name: CD
+
 on:
   push:
     branches:
       - master
       - next
       - beta
+
 jobs:
   release:
     name: Release
@@ -16,11 +18,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Install dependencies
-        run: npm ci
-      - name: Build library
+      - name: Installing dependencies
+        run: npm i
+      - name: Build
         run: npm run build
-      - name: Run tests
+      - name: Test
         run: npm run test
       - name: Release
         env:
