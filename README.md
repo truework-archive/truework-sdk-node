@@ -336,7 +336,7 @@ GitHub Action, `semantic-release` will use the commit message pattern provided
 by `commitizen` to automatically version the package. It will then publish to
 npm, as well as create a new
 [release](https://github.com/truework/truework-sdk-node/releases) here in the
-main repo.
+main repo. Do not publish this library manually from the command line.
 
 ## License
 
