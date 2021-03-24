@@ -1,6 +1,6 @@
 {
   "name": "@truework/sdk",
-  "version": "0.1.2",
+  "version": "0.2.1",
   "description": "Official Truework Node.js SDK",
   "main": "dist/index.js",
   "types": "dist/lib/index.d.ts",
