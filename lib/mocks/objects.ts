@@ -33,6 +33,7 @@ export const target: types.Target = {
   last_name: 'Rapinoe',
   social_security_number: '***-**-1234',
   company: company,
+  date_of_birth: '2006-01-01',
 };
 
 export const document: types.Document = {

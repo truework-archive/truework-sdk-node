@@ -202,6 +202,7 @@ export type Target = {
   social_security_number: string;
   contact_email?: string;
   company?: Pick<Company, 'id'> | Pick<Company, 'name'> | Company;
+  date_of_birth?: string;
 };
 export type TurnaroundTime = {
   upper_bound?: string;
