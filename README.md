@@ -42,6 +42,17 @@ const client = truework({
 });
 ```
 
+To use the SDK to call the Truework Sandbox, configure the client for the sandbox environment.
+
+```ts
+const { truework, ENVIRONMENT } = require('@truework/sdk');
+
+const client = truework({
+  token: TRUEWORK_SANDBOX_TOKEN,
+  environment: ENVIRONMENT.SANDBOX,
+});
+```
+
 # Terminology
 
 Please review the [API Documentation](https://www.truework.com/docs/api) for all

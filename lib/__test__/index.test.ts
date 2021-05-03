@@ -1,7 +1,7 @@
 import ava, { TestInterface } from 'ava';
 import nock from 'nock';
 
-import { truework, TrueworkSDK } from '../';
+import { ENVIRONMENT, truework, TrueworkSDK } from '../';
 import * as types from '../types';
 import * as requests from '../mocks/requests';
 
@@ -27,8 +27,31 @@ test('client - requires token', async t => {
     const sdk = truework({});
   });
 });
+test('client - environment and baseURL are mutually exclusive', async t => {
+  t.throws(() => {
+    const sdk = truework({
+      token: 'abcdefg',
+      baseURL,
+      environment: ENVIRONMENT.PRODUCTION,
+    });
+  });
+});
 test('client - successfully configured', async t => {
   t.truthy(truework({ token: 'abcdefg' }));
+});
+test('client - uses sandbox url', async t => {
+  nock('https://api.truework-sandbox.com')
+    .post('/verification-requests/')
+    .reply(200, { id: '12345' });
+
+  const client = truework({
+    token: 'abcdefg',
+    environment: ENVIRONMENT.SANDBOX,
+  });
+
+  const res = await client.verifications.create(requests.verification);
+
+  t.is(res.body.id, '12345');
 });
 
 test('verifications.create - requires params', async t => {
