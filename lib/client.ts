@@ -21,16 +21,17 @@ export function client (config: {
     invalid('client was initiated without a config object')
   );
 
-  const { token, version = '2019-10-15' } = config;
+  const { token, version } = config;
   const baseURL = getBaseURL(config);
 
   assert(token, invalidField('client config', 'token'));
 
+  const versionString = version ? `; version=${version}` : '';
   const client = got.extend({
     prefixUrl: baseURL,
     headers: {
       'content-type': 'application/json',
-      accept: `application/json; version=${version}`,
+      accept: `application/json${versionString}`,
       'user-agent': `Truework Node SDK v${pkg.version}; Node ${process.version}`,
       authorization: `Bearer ${token}`,
     },

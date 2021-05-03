@@ -53,6 +53,39 @@ test('client - uses sandbox url', async t => {
 
   t.is(res.body.id, '12345');
 });
+test('client - uses defined version', async t => {
+  const req = nock(baseURL)
+    .post('/verification-requests/')
+    .matchHeader('accept', fieldValue =>
+      fieldValue.includes('version=2019-10-15')
+    )
+    .reply(200, { id: '12345' });
+
+  const client = truework({
+    token: 'abcdefg',
+    baseURL,
+    version: '2019-10-15',
+  });
+
+  const res = await client.verifications.create(requests.verification);
+
+  t.is(res.body.id, '12345');
+});
+test('client - uses latest version', async t => {
+  const req = nock(baseURL)
+    .post('/verification-requests/')
+    .matchHeader('accept', fieldValue => !fieldValue.includes('version='))
+    .reply(200, { id: '12345' });
+
+  const client = truework({
+    token: 'abcdefg',
+    baseURL,
+  });
+
+  const res = await client.verifications.create(requests.verification);
+
+  t.is(res.body.id, '12345');
+});
 
 test('verifications.create - requires params', async t => {
   const { client } = t.context;
