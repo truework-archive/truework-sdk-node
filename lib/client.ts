@@ -3,7 +3,7 @@ import assert from 'nanoassert';
 import * as qs from 'query-string';
 
 import pkg from '../package.json';
-import { invalid, invalidParams, invalidField, withQueryParams } from './utils';
+import { invalid, invalidField, invalidParams, withQueryParams } from './utils';
 import * as types from './types';
 import { register } from './mocks/register';
 
@@ -12,6 +12,7 @@ export function client (config: {
   baseURL?: string;
   version?: string;
   mock?: boolean;
+  environment?: types.ENVIRONMENT;
 }) {
   if (config.mock) register();
 
@@ -20,19 +21,17 @@ export function client (config: {
     invalid('client was initiated without a config object')
   );
 
-  const {
-    token,
-    baseURL = 'https://api.truework.com/',
-    version = '2019-10-15',
-  } = config;
+  const { token, version } = config;
+  const baseURL = getBaseURL(config);
 
   assert(token, invalidField('client config', 'token'));
 
+  const versionString = version ? `; version=${version}` : '';
   const client = got.extend({
     prefixUrl: baseURL,
     headers: {
       'content-type': 'application/json',
-      accept: `application/json; version=${version}`,
+      accept: `application/json${versionString}`,
       'user-agent': `Truework Node SDK v${pkg.version}; Node ${process.version}`,
       authorization: `Bearer ${token}`,
     },
@@ -157,4 +156,34 @@ export function client (config: {
       },
     },
   };
+}
+
+function getBaseURL ({
+  baseURL,
+  environment,
+}: {
+  baseURL?: string;
+  environment?: types.ENVIRONMENT;
+}): string {
+  const productionBaseURL = 'https://api.truework.com/';
+  const sandboxBaseURL = 'https://api.truework-sandbox.com/';
+
+  switch (environment) {
+    case types.ENVIRONMENT.PRODUCTION:
+      assert(
+        baseURL == undefined,
+        invalid(
+          'cannot initialize client with ENVIRONMENT.PRODUCTION and baseURL'
+        )
+      );
+      return productionBaseURL;
+    case types.ENVIRONMENT.SANDBOX:
+      assert(
+        baseURL == undefined,
+        invalid('cannot initialize client with ENVIRONMENT.SANDBOX and baseURL')
+      );
+      return sandboxBaseURL;
+    default:
+      return baseURL ?? productionBaseURL;
+  }
 }

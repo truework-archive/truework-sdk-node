@@ -43,6 +43,10 @@ export enum PAY_REDUCED_COVID {
   NO = 'no',
   UNKNOWN = 'unknown',
 }
+export enum ENVIRONMENT {
+  PRODUCTION = 'production',
+  SANDBOX = 'sandbox',
+}
 
 /*
  * Generics
