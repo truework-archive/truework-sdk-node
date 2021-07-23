@@ -6,6 +6,7 @@ import pkg from '../package.json';
 import { invalid, invalidField, invalidParams, withQueryParams } from './utils';
 import * as types from './types';
 import { register } from './mocks/register';
+import { RequestVerificationsReverify } from './types';
 
 export function client (config: {
   token: string;
@@ -111,6 +112,25 @@ export function client (config: {
           json: {
             cancellation_reason: cancellationReason,
             cancellation_details: cancellationDetails,
+          },
+          responseType: 'json',
+        });
+      },
+      reverify (params: types.RequestVerificationsReverify) {
+        assert(
+          typeof params === 'object',
+          invalidParams('verifications.reverify')
+        );
+
+        const { id, report_id } = params;
+
+        assert(id, invalidField('verifications.reverify', 'id'));
+        assert(report_id, invalidField('verifications.reverify', 'report_id'));
+
+        return client.put({
+          url: `verification-requests/${id}/reverify/`,
+          json: {
+            report_id: report_id,
           },
           responseType: 'json',
         });
