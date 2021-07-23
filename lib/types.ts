@@ -74,6 +74,10 @@ export type RequestVerificationsCancel = {
   cancellationReason: CANCELLATION_REASONS;
   cancellationDetails?: string;
 };
+export type RequestVerificationsReverify = {
+  id: string;
+  report_id: string;
+};
 export type RequestVerificationsCreate = {
   type: VERIFICATION_TYPES;
   permissible_purpose: PERMISSIBLE_PURPOSES;
@@ -175,6 +179,7 @@ export type Price = {
   currency: string;
 };
 export type Report = {
+  id: string;
   created: string;
   current_as_of?: string;
   verification_request: ReportVerificationRequest;

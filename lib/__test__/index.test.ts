@@ -214,6 +214,45 @@ test('verifications.cancel - request is made', async t => {
   t.is(res.body, '');
 });
 
+test('verifications.reverify - requires params', async t => {
+  const { client } = t.context;
+
+  t.throws(() => {
+    // @ts-ignore
+    client.verifications.reverify();
+  });
+});
+test('verifications.reverify - requires all fields', async t => {
+  const { client } = t.context;
+
+  t.throws(() => {
+    // @ts-ignore
+    client.verifications.reverify({});
+  });
+  t.throws(() => {
+    // @ts-ignore
+    client.verifications.reverify({ id: 'abcdefg' });
+  });
+  t.throws(() => {
+    // @ts-ignore
+    client.verifications.reverify({ report_id: 'foo' });
+  });
+});
+test('verifications.reverify - request is made', async t => {
+  const { client } = t.context;
+
+  nock(baseURL)
+    .put('/verification-requests/12345/reverify/')
+    .reply(200);
+
+  const res = await client.verifications.reverify({
+    id: '12345',
+    report_id: '56789',
+  });
+
+  t.is(res.body, '');
+});
+
 test('verifications.getReport - requires params', async t => {
   const { client } = t.context;
 

@@ -122,6 +122,7 @@ export const cancelledVerification: types.Verification = {
 };
 
 export const report: types.ResponseReportGet = {
+  id: '1',
   created: '2020-08-11T15:14:51.444036Z',
   current_as_of: new Date().toString(),
   verification_request: {
