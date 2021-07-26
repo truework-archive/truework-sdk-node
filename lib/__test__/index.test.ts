@@ -1,7 +1,12 @@
 import ava, { TestInterface } from 'ava';
 import nock from 'nock';
 
-import { ENVIRONMENT, truework, TrueworkSDK } from '../';
+import {
+  ENVIRONMENT,
+  REQUEST_SYNC_STRATEGIES,
+  truework,
+  TrueworkSDK,
+} from '../';
 import * as types from '../types';
 import * as requests from '../mocks/requests';
 
@@ -105,6 +110,79 @@ test('verifications.create - request is made', async t => {
   const res = await client.verifications.create(requests.verification);
 
   t.is(res.body.id, '12345');
+});
+test('verifications.create - all headers are passed', async t => {
+  nock(baseURL)
+    .post('/verification-requests/')
+    .matchHeader('Authorization', fieldValue => fieldValue === 'Bearer abcdefg')
+    .matchHeader(
+      'request-sync',
+      fieldValue => fieldValue === 'sync-strict-timeout; timeout=15'
+    )
+    .reply(200, { id: '12345' });
+
+  const { client } = t.context;
+
+  const res = await client.verifications.create(requests.verification, {
+    strategy: REQUEST_SYNC_STRATEGIES.SYNC_STRICT_TIMEOUT,
+    timeout: 15,
+  });
+
+  t.is(res.body.id, '12345');
+});
+test('verifications.create - request-sync header is not persisted', async t => {
+  nock(baseURL)
+    .post('/verification-requests/')
+    .matchHeader(
+      'request-sync',
+      fieldValue => fieldValue === 'sync-strict-timeout; timeout=15'
+    )
+    .reply(200, { id: '12345' });
+
+  const { client } = t.context;
+
+  const res = await client.verifications.create(requests.verification, {
+    strategy: REQUEST_SYNC_STRATEGIES.SYNC_STRICT_TIMEOUT,
+    timeout: 15,
+  });
+
+  t.is(res.body.id, '12345');
+
+  nock(baseURL)
+    .post('/verification-requests/')
+    .matchHeader('request-sync', fieldValue => fieldValue === undefined)
+    .reply(200, { id: '12345' });
+
+  const res2 = await client.verifications.create(requests.verification);
+
+  t.is(res2.body.id, '12345');
+});
+test('verifications.create - invalid request-sync permutations are rejected', async t => {
+  const { client } = t.context;
+
+  t.throws(() => {
+    // @ts-ignore
+    client.verifications.create(requests.verification, true);
+  });
+  t.throws(() => {
+    // @ts-ignore
+    client.verifications.create(requests.verification, {
+      strategy: REQUEST_SYNC_STRATEGIES.SYNC_STRICT_TIMEOUT,
+    });
+  });
+  t.throws(() => {
+    // @ts-ignore
+    client.verifications.create(requests.verification, {
+      strategy: REQUEST_SYNC_STRATEGIES.SYNC_SOFT_TIMEOUT,
+    });
+  });
+  t.throws(() => {
+    client.verifications.create(requests.verification, {
+      // @ts-ignore
+      strategy: REQUEST_SYNC_STRATEGIES.ASYNC,
+      timeout: 15,
+    });
+  });
 });
 
 test('verifications.get - requires params to be an object', async t => {

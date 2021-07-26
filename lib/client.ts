@@ -6,7 +6,6 @@ import pkg from '../package.json';
 import { invalid, invalidField, invalidParams, withQueryParams } from './utils';
 import * as types from './types';
 import { register } from './mocks/register';
-import { RequestVerificationsReverify } from './types';
 
 export function client (config: {
   token: string;
@@ -40,16 +39,30 @@ export function client (config: {
 
   return {
     verifications: {
-      create (params: types.RequestVerificationsCreate) {
+      create (
+        params: types.RequestVerificationsCreate,
+        syncParams?: types.RequestSyncParameters
+      ) {
         assert(
           typeof params === 'object',
           invalidParams('verifications.create')
         );
+        if (syncParams) {
+          assert(
+            typeof syncParams === 'object',
+            invalidParams('verifications.create')
+          );
+        }
 
         return client.post<types.ResponseVerificationsCreate>({
           url: 'verification-requests/',
           json: params,
           responseType: 'json',
+          headers: syncParams
+            ? {
+                'Request-Sync': buildRequestSyncHeader(syncParams),
+              }
+            : undefined,
         });
       },
       get (params: types.RequestVerificationsGet = {} as any) {
@@ -205,5 +218,23 @@ function getBaseURL ({
       return sandboxBaseURL;
     default:
       return baseURL ?? productionBaseURL;
+  }
+}
+
+function buildRequestSyncHeader (params: types.RequestSyncParameters) {
+  if (params.strategy === types.REQUEST_SYNC_STRATEGIES.ASYNC) {
+    assert(
+      !('timeout' in params),
+      invalid('async request sync strategy does not accept a timeout')
+    );
+    return `${params.strategy.valueOf()}`;
+  } else {
+    assert(
+      'timeout' in params,
+      invalid('synchronous request sync strategies require a timeout')
+    );
+    return `${params.strategy.valueOf()}; timeout=${Math.floor(
+      params.timeout
+    )}`;
   }
 }
