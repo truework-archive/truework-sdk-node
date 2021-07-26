@@ -165,6 +165,27 @@ await client.verifications.cancel({
 });
 ```
 
+### `verifications.reverify(params)`
+
+**Request**
+
+- `params` - `object` - required
+  - `id` - `string` - required
+  - `report_id` - `string` - required
+
+**Response**
+
+Returns the full `Verification` object.
+
+**Example**
+
+```ts
+await client.verifications.reverify({
+  id: 'abc123',
+  rerport_id: 'def123',
+});
+```
+
 ### `verifications.getReport(params)`
 
 **Request**
