@@ -127,7 +127,7 @@ export function client (config: {
         assert(id, invalidField('verifications.reverify', 'id'));
         assert(report_id, invalidField('verifications.reverify', 'report_id'));
 
-        return client.put({
+        return client.put<types.ResponseVerificationsCreate>({
           url: `verification-requests/${id}/reverify/`,
           json: {
             report_id: report_id,
