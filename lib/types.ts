@@ -5,6 +5,20 @@ export enum VERIFICATION_TYPES {
   VOI = 'employment-income',
   VOE = 'employment',
 }
+export enum VERIFIER_TYPE {
+  MORTGAGE = 'mortgage',
+  BACKGROUND = 'background',
+  TENANT = 'tenant',
+  GOVERNMENT = 'government',
+  AUTO = 'auto',
+  CREDIT = 'credit',
+  IDENTITY = 'identity',
+  INSURANCE = 'insurance',
+  OFFERS = 'offers',
+  ACCOUNT_MANAGEMNT = 'account-management',
+  PREAPPROVAL = 'preapproval',
+  OTHER = 'other',
+}
 export enum CANCELLATION_REASONS {
   IMMEDIATE = 'immediate',
   HIGH_TURNAROUND_TIME = 'high-turnaround-time',
@@ -85,6 +99,7 @@ export type RequestVerificationsCreate = {
   documents?: Document[];
   additional_information?: string;
   loan_id?: string;
+  verifier_type?: VERIFIER_TYPE;
 };
 export type RequestVerificationsGetReport = {
   id: string;
@@ -233,4 +248,5 @@ export type Verification = {
   cancellation_details?: string;
   loan_id?: string;
   reports?: Report[];
+  verifier_type: VERIFIER_TYPE;
 };
