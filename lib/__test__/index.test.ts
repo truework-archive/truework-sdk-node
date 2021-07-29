@@ -243,14 +243,14 @@ test('verifications.reverify - request is made', async t => {
 
   nock(baseURL)
     .put('/verification-requests/12345/reverify/')
-    .reply(200);
+    .reply(200, { id: '12345' });
 
   const res = await client.verifications.reverify({
     id: '12345',
     report_id: '56789',
   });
 
-  t.is(res.body, '');
+  t.is(res.body.id, '12345');
 });
 
 test('verifications.getReport - requires params', async t => {
