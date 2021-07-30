@@ -1,4 +1,5 @@
 import * as types from '../types';
+import { VERIFICATION_USE_CASES } from '../types';
 import * as objects from './objects';
 import * as constants from './constants';
 import { createPaginatedResponse } from './util';
@@ -19,6 +20,7 @@ export const verifications = {
       permissible_purpose: data.permissible_purpose,
       type: data.type,
       date_of_completion: null,
+      use_case: VERIFICATION_USE_CASES.MORTGAGE,
     };
 
     if (data.documents) {

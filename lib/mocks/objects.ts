@@ -1,6 +1,6 @@
 import * as types from '../types';
 import * as constants from './constants';
-import { PAY_REDUCED_COVID } from '../types';
+import { PAY_REDUCED_COVID, VERIFICATION_USE_CASES } from '../types';
 
 export const error: types.SDKError = {
   error: {
@@ -119,6 +119,7 @@ export const cancelledVerification: types.Verification = {
   cancellation_reason: types.CANCELLATION_REASONS.OTHER,
   cancellation_details: 'Cancellation in more detail',
   date_of_completion: null,
+  use_case: VERIFICATION_USE_CASES.MORTGAGE,
 };
 
 export const report: types.ResponseReportGet = {
@@ -151,4 +152,5 @@ export const verification: types.Verification = {
   date_of_completion: null,
   reports: [report],
   loan_id: '12345',
+  use_case: VERIFICATION_USE_CASES.MORTGAGE,
 };
