@@ -61,6 +61,11 @@ export enum ENVIRONMENT {
   PRODUCTION = 'production',
   SANDBOX = 'sandbox',
 }
+export enum REQUEST_SYNC_STRATEGIES {
+  SYNC_STRICT_TIMEOUT = 'sync-strict-timeout',
+  SYNC_SOFT_TIMEOUT = 'sync-soft-timeout',
+  ASYNC = 'async',
+}
 
 /*
  * Generics
@@ -75,6 +80,14 @@ export type PaginatedResponse<T> = {
 /*
  * Requests method shapes
  */
+export type RequestSyncParameters =
+  | {
+      strategy: REQUEST_SYNC_STRATEGIES.ASYNC;
+    }
+  | {
+      strategy: Exclude<REQUEST_SYNC_STRATEGIES, REQUEST_SYNC_STRATEGIES.ASYNC>;
+      timeout: number;
+    };
 export type RequestVerificationsGet = {
   state?: VERIFICATION_STATES;
   offset?: number;
