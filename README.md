@@ -238,12 +238,25 @@ await client.companies.get({ query: 'USWNT' });
 
 **Response**
 
-Returns a `PaginatedResponse` containing an array of `Company`s.
+Returns a `CredentialsSession`
 
 **Example**
 
 ```ts
-await client.companies.get({ query: 'USWNT' });
+await client.credentials.createSession({
+  type: 'employment',
+  permissible_purpose: 'employment',
+  use_case: 'mortgage',
+  target: {
+    first_name: 'Megan',
+    last_name: 'Rapinoe',
+    social_security_number: '123121234',
+    date_of_birth: '2020-02-02',
+    company: {
+      name: 'USWNT',
+    },
+  },
+});
 ```
 
 # Testing
