@@ -36,6 +36,15 @@ export const target: types.Target = {
   date_of_birth: '2006-01-01',
 };
 
+export const credentialsTarget: types.CredentialsTarget = {
+  first_name: 'Megan',
+  last_name: 'Rapinoe',
+  social_security_number: '***-**-1234',
+  company: company,
+  date_of_birth: '2006-01-01',
+  contact_email: 'm@gmail.com',
+};
+
 export const document: types.Document = {
   filename: 'hello.pdf',
   content: 'aGVsbG8gd29ybGQ=',

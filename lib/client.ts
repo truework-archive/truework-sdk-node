@@ -188,6 +188,20 @@ export function client (config: {
         });
       },
     },
+    credentials: {
+      createSession (params: types.RequestCredentialsSessionCreate) {
+        assert(
+          typeof params === 'object',
+          invalidParams('credentials.createSession')
+        );
+
+        return client.post<types.ResponseCredentialsSessionCreate>({
+          url: 'credentials/session',
+          json: params,
+          responseType: 'json',
+        });
+      },
+    },
   };
 }
 

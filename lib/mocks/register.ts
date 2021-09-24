@@ -78,4 +78,12 @@ export function register () {
       const { query } = qs.parseUrl(uri);
       return responses.companies.get(query as types.RequestCompaniesGet);
     });
+
+  /*
+   * Credentials Create Session
+   */
+  nock('https://api.truework.com/')
+    .persist()
+    .post('/credentials/session')
+    .reply(201, responses.credentials.createSession());
 }
