@@ -9,6 +9,7 @@ import {
 } from '../';
 import * as types from '../types';
 import * as requests from '../mocks/requests';
+import { credentialsSession } from '../mocks/requests';
 
 const test = ava as TestInterface<{ client: TrueworkSDK }>;
 const baseURL = 'https://test.truework.com/';
@@ -406,4 +407,25 @@ test('companies.get - supports other query params', async t => {
   });
 
   t.is(res.body.count, 1);
+});
+test('credentials.createSession - requires params', async t => {
+  const { client } = t.context;
+
+  t.throws(() => {
+    // @ts-ignore
+    client.credentials.createSession();
+  });
+});
+test('credentials.createSession - request is made', async t => {
+  nock(baseURL)
+    .post('/credentials/session')
+    .reply(200, { token: '12345' });
+
+  const { client } = t.context;
+
+  const res = await client.credentials.createSession(
+    requests.credentialsSession
+  );
+
+  t.is(res.body.token, '12345');
 });

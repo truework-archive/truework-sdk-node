@@ -224,6 +224,41 @@ Returns a `PaginatedResponse` containing an array of `Company`s.
 await client.companies.get({ query: 'USWNT' });
 ```
 
+## Credentials
+
+### `credentials.createSession(params)`
+
+**Request**
+
+- `params` - `object` - required
+  - `type` - `VerificationType` - required
+  - `permissible_purpose` - `PermissiblePurpose` - required
+  - `use_case` - `UseCase` - required
+  - `target` - `Target` - required
+
+**Response**
+
+Returns a `CredentialsSession`
+
+**Example**
+
+```ts
+await client.credentials.createSession({
+  type: 'employment',
+  permissible_purpose: 'employment',
+  use_case: 'mortgage',
+  target: {
+    first_name: 'Megan',
+    last_name: 'Rapinoe',
+    social_security_number: '123121234',
+    date_of_birth: '2020-02-02',
+    company: {
+      name: 'USWNT',
+    },
+  },
+});
+```
+
 # Testing
 
 This SDK provides a naive "mock" mode that can be used for basic testing during

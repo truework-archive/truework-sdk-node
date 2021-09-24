@@ -122,6 +122,12 @@ export type RequestCompaniesGet = {
   offset?: number;
   limit?: number;
 };
+export type RequestCredentialsSessionCreate = {
+  type: VERIFICATION_TYPES;
+  permissible_purpose: PERMISSIBLE_PURPOSES;
+  use_case: VERIFICATION_USE_CASES;
+  target: CredentialsTarget;
+};
 
 /*
  * API Responses
@@ -132,6 +138,7 @@ export type ResponseVerificationsGetOne = Verification;
 export type ResponseVerificationsCancel = string;
 export type ResponseReportGet = Report;
 export type ResponseCompaniesGet = PaginatedResponse<CompanySearchResult>;
+export type ResponseCredentialsSessionCreate = CredentialsSession;
 
 /*
  * Errors
@@ -241,6 +248,14 @@ export type Target = {
   company?: Pick<Company, 'id'> | Pick<Company, 'name'> | Company;
   date_of_birth?: string;
 };
+export type CredentialsTarget = {
+  first_name: string;
+  last_name: string;
+  social_security_number: string;
+  contact_email: string;
+  date_of_birth: string;
+  company?: Pick<Company, 'id'> | Pick<Company, 'name'> | Company;
+};
 export type TurnaroundTime = {
   upper_bound?: string;
   lower_bound?: string;
@@ -262,4 +277,7 @@ export type Verification = {
   loan_id?: string;
   reports?: Report[];
   use_case: VERIFICATION_USE_CASES;
+};
+export type CredentialsSession = {
+  token: string;
 };

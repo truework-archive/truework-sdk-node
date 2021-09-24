@@ -191,3 +191,17 @@ test('companies.get', async t => {
   t.truthy(res.body.next);
   t.truthy(res.body.previous);
 });
+
+/*
+ * Verifications Create
+ */
+
+test('credentials.createSession', async t => {
+  const { client } = t.context;
+
+  const res = await client.credentials.createSession(
+    requests.credentialsSession
+  );
+
+  t.is(res.statusCode, 201);
+});

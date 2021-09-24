@@ -100,3 +100,9 @@ export const companies = {
     return createPaginatedResponse(objects.companySearchResult, data);
   },
 };
+
+export const credentials = {
+  createSession () {
+    return [201, { token: '12345' }];
+  },
+};
