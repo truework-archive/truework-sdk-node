@@ -62,9 +62,10 @@ export enum ENVIRONMENT {
   SANDBOX = 'sandbox',
 }
 export enum REQUEST_SYNC_STRATEGIES {
-  SYNC_STRICT_TIMEOUT = 'sync-strict-timeout',
-  SYNC_SOFT_TIMEOUT = 'sync-soft-timeout',
+  SYNC = 'sync',
   ASYNC = 'async',
+  /** @deprecated Use {@link SYNC} and pass timeout on client initialization instead */
+  SYNC_STRICT_TIMEOUT = 'sync-strict-timeout',
 }
 
 /*
@@ -82,10 +83,10 @@ export type PaginatedResponse<T> = {
  */
 export type RequestSyncParameters =
   | {
-      strategy: REQUEST_SYNC_STRATEGIES.ASYNC;
+      strategy: REQUEST_SYNC_STRATEGIES.SYNC | REQUEST_SYNC_STRATEGIES.ASYNC;
     }
   | {
-      strategy: Exclude<REQUEST_SYNC_STRATEGIES, REQUEST_SYNC_STRATEGIES.ASYNC>;
+      strategy: REQUEST_SYNC_STRATEGIES.SYNC_STRICT_TIMEOUT;
       timeout: number;
     };
 export type RequestVerificationsGet = {

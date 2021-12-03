@@ -7,12 +7,16 @@ import { invalid, invalidField, invalidParams, withQueryParams } from './utils';
 import * as types from './types';
 import { register } from './mocks/register';
 
+/**
+ * @param config.timeout - Milliseconds to wait for a request to complete before aborting with got.TimeoutError. By default, there's no timeout.
+ */
 export function client (config: {
   token: string;
   baseURL?: string;
   version?: string;
   mock?: boolean;
   environment?: types.ENVIRONMENT;
+  timeout?: number;
 }) {
   if (config.mock) register();
 
@@ -35,6 +39,7 @@ export function client (config: {
       'user-agent': `Truework Node SDK v${pkg.version}; Node ${process.version}`,
       authorization: `Bearer ${token}`,
     },
+    timeout: config.timeout,
   });
 
   return {
@@ -236,19 +241,16 @@ function getBaseURL ({
 }
 
 function buildRequestSyncHeader (params: types.RequestSyncParameters) {
-  if (params.strategy === types.REQUEST_SYNC_STRATEGIES.ASYNC) {
-    assert(
-      !('timeout' in params),
-      invalid('async request sync strategy does not accept a timeout')
-    );
-    return `${params.strategy.valueOf()}`;
-  } else {
-    assert(
-      'timeout' in params,
-      invalid('synchronous request sync strategies require a timeout')
+  if (params.strategy === types.REQUEST_SYNC_STRATEGIES.SYNC_STRICT_TIMEOUT) {
+    console.warn(
+      invalid(
+        'SYNC_STRICT_TIMEOUT has been deprecated. Please use SYNC and pass desired timeout on client initialization.'
+      )
     );
     return `${params.strategy.valueOf()}; timeout=${Math.floor(
       params.timeout
     )}`;
   }
+
+  return `${params.strategy.valueOf()}`;
 }

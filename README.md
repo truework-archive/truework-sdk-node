@@ -42,6 +42,16 @@ const client = truework({
 });
 ```
 
+To set a timeout on requests, pass in the timeout value in milliseconds when configuring the client. If a request times
+out, it will abort with [got.TimeoutError](https://www.npmjs.com/package/got#gottimeouterror).
+
+```ts
+const client = truework({
+  token: TRUEWORK_ACCESS_TOKEN,
+  timeout: 6000,
+});
+```
+
 To use the SDK to call the Truework Sandbox, configure the client for the sandbox environment.
 
 ```ts

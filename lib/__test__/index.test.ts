@@ -18,6 +18,7 @@ test.before(t => {
   t.context.client = truework({
     baseURL,
     token: 'abcdefg',
+    timeout: 500,
   });
 });
 
@@ -92,6 +93,15 @@ test('client - uses latest version', async t => {
 
   t.is(res.body.id, '12345');
 });
+test('client - requests time out', async t => {
+  const { client } = t.context;
+
+  nock(baseURL)
+    .get('/verification-requests/')
+    .delayConnection(1000)
+    .reply(200, { count: 0 });
+  await t.throwsAsync(client.verifications.get);
+});
 
 test('verifications.create - requires params', async t => {
   const { client } = t.context;
@@ -116,17 +126,13 @@ test('verifications.create - all headers are passed', async t => {
   nock(baseURL)
     .post('/verification-requests/')
     .matchHeader('Authorization', fieldValue => fieldValue === 'Bearer abcdefg')
-    .matchHeader(
-      'request-sync',
-      fieldValue => fieldValue === 'sync-strict-timeout; timeout=15'
-    )
+    .matchHeader('request-sync', fieldValue => fieldValue === 'sync')
     .reply(200, { id: '12345' });
 
   const { client } = t.context;
 
   const res = await client.verifications.create(requests.verification, {
-    strategy: REQUEST_SYNC_STRATEGIES.SYNC_STRICT_TIMEOUT,
-    timeout: 15,
+    strategy: REQUEST_SYNC_STRATEGIES.SYNC,
   });
 
   t.is(res.body.id, '12345');
@@ -134,17 +140,13 @@ test('verifications.create - all headers are passed', async t => {
 test('verifications.create - request-sync header is not persisted', async t => {
   nock(baseURL)
     .post('/verification-requests/')
-    .matchHeader(
-      'request-sync',
-      fieldValue => fieldValue === 'sync-strict-timeout; timeout=15'
-    )
+    .matchHeader('request-sync', fieldValue => fieldValue === 'sync')
     .reply(200, { id: '12345' });
 
   const { client } = t.context;
 
   const res = await client.verifications.create(requests.verification, {
-    strategy: REQUEST_SYNC_STRATEGIES.SYNC_STRICT_TIMEOUT,
-    timeout: 15,
+    strategy: REQUEST_SYNC_STRATEGIES.SYNC,
   });
 
   t.is(res.body.id, '12345');
@@ -158,34 +160,6 @@ test('verifications.create - request-sync header is not persisted', async t => {
 
   t.is(res2.body.id, '12345');
 });
-test('verifications.create - invalid request-sync permutations are rejected', async t => {
-  const { client } = t.context;
-
-  t.throws(() => {
-    // @ts-ignore
-    client.verifications.create(requests.verification, true);
-  });
-  t.throws(() => {
-    // @ts-ignore
-    client.verifications.create(requests.verification, {
-      strategy: REQUEST_SYNC_STRATEGIES.SYNC_STRICT_TIMEOUT,
-    });
-  });
-  t.throws(() => {
-    // @ts-ignore
-    client.verifications.create(requests.verification, {
-      strategy: REQUEST_SYNC_STRATEGIES.SYNC_SOFT_TIMEOUT,
-    });
-  });
-  t.throws(() => {
-    client.verifications.create(requests.verification, {
-      // @ts-ignore
-      strategy: REQUEST_SYNC_STRATEGIES.ASYNC,
-      timeout: 15,
-    });
-  });
-});
-
 test('verifications.get - requires params to be an object', async t => {
   const { client } = t.context;
 
