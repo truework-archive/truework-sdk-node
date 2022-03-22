@@ -42,6 +42,17 @@ const client = truework({
 });
 ```
 
+To set a timeout on requests, pass in the timeout value in milliseconds when configuring the client. If a request times
+out, it will abort with [got.TimeoutError](https://www.npmjs.com/package/got#gottimeouterror). Most applicable when
+used in conjunction with [synchronous creation of verifications](#verificationscreateparams-syncparams).
+
+```ts
+const client = truework({
+  token: TRUEWORK_ACCESS_TOKEN,
+  timeout: 6000,
+});
+```
+
 To use the SDK to call the Truework Sandbox, configure the client for the sandbox environment.
 
 ```ts
@@ -141,6 +152,63 @@ await client.verifications.create({
   },
   additional_information: 'Lorem ipsum dolor...',
 });
+```
+
+### `verifications.create(params, syncParams)`
+
+Executes the request synchronously, attempting to return the completed verification rather than sending a webhook on
+completion. It is recommended to use the [client](#getting-started) `timeout` param in conjunction with this method.
+
+**Request**
+
+- `params` - `object` - required
+  - `type` - `VerificationType` - required
+  - `permissible_purpose` - `PermissiblePurpose` - required
+  - `target` - `Target` - required
+  - `documents` - `Document`
+  - `additional_information` - `string`
+- `syncParams` - `object`
+  - `strategy` - `RequestSyncStrategy`
+
+**Response**
+
+Returns the full `Verification` object, with `reports` if successful.
+
+**Example**
+
+```ts
+const {
+  truework,
+  REQUEST_SYNC_STRATEGIES,
+  VERIFICATION_TYPES,
+  PERMISSIBLE_PURPOSES,
+} = require('@truework/sdk');
+
+const client = truework({
+  token: TRUEWORK_ACCESS_TOKEN,
+  timeout: 6000,
+});
+
+const res = await client.verifications.create(
+  {
+    type: VERIFICATION_TYPES.EMPLOYMENT,
+    permissible_purpose: PERMISSIBLE_PURPOSES.EMPLOYMENT,
+    target: {
+      first_name: 'Megan',
+      last_name: 'Rapinoe',
+      social_security_number: '123121234',
+      date_of_birth: '1990-09-26',
+    },
+    additional_information: 'Lorem ipsum dolor...',
+  },
+  {
+    strategy: REQUEST_SYNC_STRATEGIES.SYNC,
+  }
+);
+
+if (res.body.reports?.length) {
+  // verification completed synchronously
+}
 ```
 
 ### `verifications.cancel(params)`
