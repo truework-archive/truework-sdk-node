@@ -31,7 +31,7 @@
     "ava": "^3.10.1",
     "bili": "^1.5.3",
     "husky": "^4.2.5",
-    "prettier-standard": "^15.0.1",
+    "prettier-standard": "^16.4.1",
     "semantic-release": "^19.0.2",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
