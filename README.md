@@ -1,6 +1,7 @@
-⚠️ This SDK version is deprecated. The SDK does work, but is not maintained and new features may not be supported. For now, we encourage our customers to integrate directly against the API using https://truework.com/docs.
+⚠️ This SDK version is deprecated. The SDK does work, but is not maintained and new features may not be supported. For now, we encourage our customers to integrate directly against the API using https://truework.com/docs. ⚠️ 
 
-# @truework/sdk ![npm](https://img.shields.io/npm/v/@truework/sdk) [![install size](https://packagephobia.com/badge?p=@truework/sdk)](https://packagephobia.com/result?p=@truework/sdk)
+# @truework/sdk ![npm](https://img.shields.io/npm/v/@truework/sdk) [![install size](https://packagephobia.com/badge?p=@truework/sdk)](https://packagephobia.com/result?p=@truework/sdk) [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 
 The official Truework API Node.js SDK.
 
