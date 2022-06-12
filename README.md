@@ -23,7 +23,7 @@ The official Truework API Node.js SDK.
 - 🏠 [Truework](https://www.truework.com)
 - 👷‍♀️ [Careers](https://www.truework.com/careers)
 
-# Getting Started
+## Getting Started
 
 ```bash
 npm i @truework/sdk --save
@@ -67,13 +67,13 @@ const client = truework({
 });
 ```
 
-# Terminology
+## Terminology
 
 Please review the [API Documentation](https://www.truework.com/docs/api) for all
 terminology. If you're using Typescript, have a look at the
 [types](https://github.com/truework/truework-sdk-node/blob/master/lib/types.ts).
 
-# Usage
+## Usage
 
 All requests are made using [got](https://github.com/sindresorhus/got), and so
 responses implement a got
@@ -330,7 +330,7 @@ await client.credentials.createSession({
 });
 ```
 
-# Testing
+## Testing
 
 This SDK provides a naive "mock" mode that can be used for basic testing during
 CI, etc. It is _stateless_, meaning no data is persisted between API calls. When
@@ -399,7 +399,7 @@ try {
       },
     },
     additional_information: 'Lorem ipsum dolor...',
-  })
+  )
 } catch (e) {
   console.log(e.response) // error response body
 }
